@@ -4,7 +4,7 @@ sudo pacman -S xdg-user-dirs --noconfirm
 xdg-user-dirs-update
 
 echo 'Установка программ'
-sudo pacman -S git yajl ufw f2fs-tools dosfstools ntfs-3g alsa-lib alsa-utils file-roller p7zip unrar gvfs aspell-ru pulseaudio pavucontrol --noconfirm
+sudo pacman -S curl git yajl ufw f2fs-tools dosfstools ntfs-3g alsa-lib alsa-utils file-roller p7zip unrar gvfs aspell-ru pulseaudio pavucontrol --noconfirm
 
 echo 'Установка yaourt'
 cd /tmp
@@ -23,7 +23,16 @@ echo 'Установка pamac'
 yaourt pamac
 yaourt timeshift
 
+echo 'Установить рекомендумые программы?'
+read -p "1 - Да, 0 - Нет: " prog_set
+if [[ $prog_set == 1 ]]; then
+  sudo pacman -S vlc gimp libreoffice libreoffice-fresh-ru inkscape screenfetch grub-customizer deadbeef imagewriter --noconfirm
+  yaourt -S google-chrome --noconfirm 
+elif [[ $prog_set == 0 ]]; then
+  echo 'Установка программ пропущена.'
+fi
 
+echo 'alias update-grub="sudo grub-mkconfig -o /boot/grub/grub.cfg"' >> ~/.zshrc
 echo 'Включаем сетевой экран'
 sudo ufw enable
 
