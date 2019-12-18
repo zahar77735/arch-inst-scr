@@ -23,6 +23,9 @@ echo 'FONT=cyr-sun16' >> /etc/vconsole.conf
 echo 'tmpfs /tmp tmpfs noatime,nodiratime,mode=1777,size=50% 0 0' | sudo tee -a /etc/fstab
 echo -e "vm.swappiness=10" | sudo tee -a /etc/sysctl.conf
 
+echo 'Установка доп. приложений'
+pacman -S linux linux-firmware nano dhcpcd netctl btrfs-progs wget zsh mc
+
 nano /etc/mkinitcpio.conf
 
 echo 'Создадим загрузочный RAM диск'
