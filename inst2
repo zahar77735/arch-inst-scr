@@ -27,7 +27,7 @@ echo 'Создадим загрузочный RAM диск'
 mkinitcpio -p linux
 
 echo '3.5 Устанавливаем загрузчик'
-
+read -p "Куда ставим загрузчик: " devsection
 grub-install /dev/$devsection
 
 echo 'Обновляем grub.cfg'
@@ -88,6 +88,10 @@ pacman -S networkmanager network-manager-applet ppp --noconfirm
 
 echo 'Подключаем автозагрузку менеджера входа и интернет'
 systemctl enable NetworkManager
+
+curl -L http://install.ohmyz.sh | sh
+
+chsh -s /bin/zsh
 
 echo 'Установка завершена! Перезагрузите систему.'
 
