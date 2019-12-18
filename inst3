@@ -3,11 +3,9 @@ echo 'Создаем нужные директории'
 sudo pacman -S xdg-user-dirs --noconfirm
 xdg-user-dirs-update
 
-chsh -s /bin/zsh
-curl -L http://install.ohmyz.sh | sh
-
 echo 'Установка программ'
 sudo pacman -S curl ffmpeg gthumb git yajl ufw f2fs-tools dosfstools ntfs-3g alsa-lib alsa-utils file-roller p7zip unrar gvfs aspell-ru pulseaudio pavucontrol --noconfirm
+
 
 echo 'Установка yaourt'
 cd /tmp
@@ -34,6 +32,9 @@ if [[ $prog_set == 1 ]]; then
 elif [[ $prog_set == 0 ]]; then
   echo 'Установка программ пропущена.'
 fi
+
+chsh -s /bin/zsh
+curl -L http://install.ohmyz.sh | sh
 
 echo 'alias update-grub="sudo grub-mkconfig -o /boot/grub/grub.cfg"' >> ~/.zshrc
 echo 'Включаем сетевой экран'
