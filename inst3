@@ -27,10 +27,9 @@ yaourt timeshift
 echo 'Установить рекомендумые программы?'
 read -p "1 - Да, 0 - Нет: " prog_set
 if [[ $prog_set == 1 ]]; then
-  sudo pacman -S vlc gimp libreoffice libreoffice-fresh-ru inkscape screenfetch grub-customizer deadbeef gnome-tweaks hwinfo libzip pstoedit mariadb-libs unixodbc libva-vdpau-driver --noconfirm
+  sudo pacman -S vlc gimp libreoffice libreoffice-fresh-ru inkscape screenfetch grub-customizer deadbeef hwinfo libzip pstoedit mariadb-libs unixodbc libva-vdpau-driver --noconfirm
   yaourt -S google-chrome --noconfirm 
   yaourt -S imagewriter --noconfirm
-  sudo pacman -S chrome-gnome-shell
 elif [[ $prog_set == 0 ]]; then
   echo 'Установка программ пропущена.'
 fi
