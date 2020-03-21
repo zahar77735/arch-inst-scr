@@ -20,8 +20,10 @@ cd ..
 sudo rm -dR yaourt/ package-query/
 cd ~/
 
-echo 'Установка timeshift'
+echo 'Установка pamac'
 yaourt pamac-aur --noconfirm
+
+echo 'Установка timeshift'
 yaourt timeshift --noconfirm
 
 echo 'Установить рекомендумые программы?'
