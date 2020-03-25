@@ -24,7 +24,7 @@ echo 'tmpfs /tmp tmpfs noatime,nodiratime,mode=1777,size=50% 0 0' | sudo tee -a 
 echo -e "vm.swappiness=10" | sudo tee -a /etc/sysctl.conf
 
 echo 'Установка доп. приложений'
-pacman -S linux linux-firmware nano dhcpcd netctl btrfs-progs wget zsh mc
+pacman -S linux linux-firmware linux-headers nano dhcpcd netctl btrfs-progs wget zsh mc
 
 nano /etc/mkinitcpio.conf
 
@@ -32,7 +32,7 @@ echo 'Создадим загрузочный RAM диск'
 mkinitcpio -p linux
 
 echo '3.5 Устанавливаем загрузчик'
-pacman -S grub os-prober
+pacman -S grub os-prober --noconfirm
 read -p "Куда ставим загрузчик: " devsection
 grub-install /dev/$devsection
 
@@ -86,6 +86,21 @@ elif [[ $vm_setting == 3 ]]; then
   ssystemctl enable gdm
 fi
 
+echo 'Ваша видеокарта nVidia? Установить проприетарный драйвер?'
+read -p "1 - Да, 0 - Нет: " nvidea_set
+if [[ $nvidia_set == 1 ]]; then
+  pacman -S nvidia-dkms nvidia-utils lib32-nvidia-utils nvidia-settings opencl-nvidia lib32-opencl-nvidia vulkan-icd-loader lib32-vulkan-icd-loader --noconfirm
+  mkdir /etc/pacman.d/hooks
+  wget https://github.com/zahar77735/arch-inst-scr/blob/master/files/nvidia.hook
+  mv nvidia.hook /etc/pacman.d/hooks/nvidia.hook
+  
+elif [[ $nvidia_set == 0 ]]; then
+  echo 'Установка пропущена.'
+fi
+
+echo "изменяем активный планировщик ввода-вывода"
+wget https://github.com/zahar77735/arch-inst-scr/blob/master/files/60-ioschedulers.rules
+mv 60-ioschedulers.rules /etc/udev/rules.d/60-ioschedulers.rules
 
 echo 'Ставим шрифты'
 pacman -S ttf-liberation ttf-dejavu --noconfirm 
@@ -99,5 +114,3 @@ systemctl enable NetworkManager
 
 echo 'Установка завершена! Перезагрузите систему.'
 
-exit
-reboot
