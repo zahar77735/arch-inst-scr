@@ -79,7 +79,7 @@ if [[ $vm_setting == 1 ]]; then
   pacman -S xfce4 xfce4-goodies lightdm --noconfirm
   systemctl enable lightdm
 elif [[ $vm_setting == 2 ]]; then
-  pacman -Sy plasma-meta kdebase sddm packagekit-qt5 qt5-xmlpatterns  spectacle --noconfirm
+  pacman -Sy plasma-meta kdebase sddm packagekit-qt5 qt5-xmlpatterns spectacle okular --noconfirm
   systemctl enable sddm
 elif [[ $vm_setting == 3 ]]; then  
   pacman -S gnome gnome-shell gdm --noconfirm
@@ -90,10 +90,14 @@ echo 'Ваша видеокарта nVidia? Установить проприе�
 read -p "1 - Да, 0 - Нет: " nvidea_set
 if [[ $nvidia_set == 1 ]]; then
   pacman -S nvidia-dkms nvidia-utils lib32-nvidia-utils nvidia-settings opencl-nvidia lib32-opencl-nvidia vulkan-icd-loader lib32-vulkan-icd-loader --noconfirm
+  sed -i 's/MODULES=(/MODULES=(nvidia nvidia_modeset nvidia_uvm nvidia_drm /' ./etc/mkinitcpio.conf
+  sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT="/GRUB_CMDLINE_LINUX_DEFAULT="nvidia-drm.modeset=1 /' ./etc/default/grub
+  mkinitcpio -p linux
+  grub-mkconfig -o /boot/grub/grub.cfg
   mkdir /etc/pacman.d/hooks
   wget https://github.com/zahar77735/arch-inst-scr/blob/master/files/nvidia.hook
   mv nvidia.hook /etc/pacman.d/hooks/nvidia.hook
-  
+  chmod 644 /etc/pacman.d/hooks/nvidia.hook
 elif [[ $nvidia_set == 0 ]]; then
   echo 'Установка пропущена.'
 fi
@@ -101,6 +105,7 @@ fi
 echo "изменяем активный планировщик ввода-вывода"
 wget https://github.com/zahar77735/arch-inst-scr/blob/master/files/60-ioschedulers.rules
 mv 60-ioschedulers.rules /etc/udev/rules.d/60-ioschedulers.rules
+chmod 644 /etc/udev/rules.d/60-ioschedulers.rules
 
 echo 'Ставим шрифты'
 pacman -S ttf-liberation ttf-dejavu --noconfirm 
