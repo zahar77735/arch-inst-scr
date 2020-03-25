@@ -80,6 +80,7 @@ if [[ $vm_setting == 1 ]]; then
   systemctl enable lightdm
 elif [[ $vm_setting == 2 ]]; then
   pacman -Sy plasma-meta kdebase sddm packagekit-qt5 qt5-xmlpatterns spectacle okular ark kvantum latte-dock --noconfirm
+  pacman -Ry konqueror --noconfirm
   systemctl enable sddm
 elif [[ $vm_setting == 3 ]]; then  
   pacman -S gnome gnome-shell gdm --noconfirm
