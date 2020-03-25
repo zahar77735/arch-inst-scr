@@ -4,7 +4,7 @@ sudo pacman -S xdg-user-dirs --noconfirm
 xdg-user-dirs-update
 
 echo 'Установка программ'
-sudo pacman -S curl ffmpeg gthumb git yajl ufw f2fs-tools dosfstools ntfs-3g alsa-lib alsa-utils p7zip unrar gvfs aspell-ru pulseaudio pavucontrol --noconfirm
+sudo pacman -S curl ffmpeg gthumb git yajl ufw f2fs-tools dosfstools mtools ntfs-3g alsa-lib alsa-utils p7zip unrar gvfs aspell-ru pulseaudio pavucontrol --noconfirm
 
 
 echo 'Установка yaourt'
@@ -20,16 +20,34 @@ cd ..
 sudo rm -dR yaourt/ package-query/
 cd ~/
 
-echo 'Установка pamac'
-yaourt pamac-aur --noconfirm
+echo 'Установить pamac?'
+read -p "1 - Да, 0 - Нет: " pamac_set
+if [[ $pamac_set == 1 ]]; then
+  yaourt pamac-aur --noconfirm
+elif [[ $pamac_set == 0 ]]; then
+  echo 'Установка pamac пропущена.'
+fi
 
-echo 'Установка timeshift'
-yaourt timeshift --noconfirm
+echo 'Установить timeshift?'
+read -p "1 - Да, 0 - Нет: " timeshift_set
+if [[ $timeshift_set == 1 ]]; then
+  yaourt timeshift --noconfirm
+elif [[ $timeshift_set == 0 ]]; then
+  echo 'Установка timeshift пропущена.'
+fi
+
+echo 'Установить steam?'
+read -p "1 - Да, 0 - Нет: " steam_set
+if [[ $steam_set == 1 ]]; then
+  sudo pacman -S steam --noconfirm
+elif [[ $steam_set == 0 ]]; then
+  echo 'Установка timeshift пропущена.'
+fi
 
 echo 'Установить рекомендумые программы?'
 read -p "1 - Да, 0 - Нет: " prog_set
 if [[ $prog_set == 1 ]]; then
-  sudo pacman -S vlc audacious gimp libreoffice libreoffice-fresh-ru inkscape screenfetch hwinfo libzip pstoedit mariadb-libs unixodbc libva-vdpau-driver --noconfirm
+  sudo pacman -S vlc audacious gimp libreoffice libreoffice-fresh-ru inkscape hwinfo libzip pstoedit mariadb-libs unixodbc libva-vdpau-driver --noconfirm
   yaourt -S google-chrome --noconfirm 
   yaourt -S imagewriter --noconfirm
 elif [[ $prog_set == 0 ]]; then
@@ -39,7 +57,7 @@ fi
 chsh -s /bin/zsh
 curl -L http://install.ohmyz.sh | sh
 
-echo 'alias update-grub="sudo grub-mkconfig -o /boot/grub/grub.cfg"' >> ~/.zshrc
+echo 'alias update-grub="grub-mkconfig -o /boot/grub/grub.cfg"' >> ~/.zshrc
 echo 'Включаем сетевой экран'
 sudo ufw enable
 
