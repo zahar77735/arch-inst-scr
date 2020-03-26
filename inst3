@@ -4,7 +4,7 @@ sudo pacman -S xdg-user-dirs --noconfirm
 xdg-user-dirs-update
 
 echo 'Установка программ'
-sudo pacman -S curl gparted gnome-disk-utility ffmpeg gthumb git yajl ufw f2fs-tools dosfstools mtools ntfs-3g alsa-lib alsa-utils p7zip unrar gvfs aspell-ru pulseaudio pavucontrol --noconfirm
+sudo pacman -S curl gparted gpart gnome-disk-utility ffmpeg gthumb git yajl ufw f2fs-tools dosfstools mtools ntfs-3g alsa-lib alsa-utils p7zip unrar gvfs aspell-ru pulseaudio pavucontrol --noconfirm
 sudo pacman -Ry firefox --noconfirm
 
 echo 'Установка yaourt'
@@ -32,6 +32,7 @@ echo 'Установить timeshift?'
 read -p "1 - Да, 0 - Нет: " timeshift_set
 if [[ $timeshift_set == 1 ]]; then
   yaourt timeshift --noconfirm
+  sudo pacman -Sy cron --noconfirm
 elif [[ $timeshift_set == 0 ]]; then
   echo 'Установка timeshift пропущена.'
 fi
@@ -75,6 +76,11 @@ elif [[ $nv_set == 0 ]]; then
   echo 'Ну нет так нет.'
 fi
 
+touch ~/.face
+ln -s ~/.face ~/.face.icon
+
+sudo grub-mkconfig -o /boot/grub/grub.cfg
+
 echo 'Установка завершена!'
 
-systemctl reboot
+
