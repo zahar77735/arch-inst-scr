@@ -67,7 +67,7 @@ sudo systemctl enable ufw
 echo 'У вас nVidia?'
 read -p "1 - Да, 0 - Нет: " nv_set
 if [[ $nv_set == 1 ]]; then
-  wget https://github.com/zahar77735/arch-inst-scr/blob/master/files/NVIDIACONFIG.desktop
+  wget https://raw.githubusercontent.com/zahar77735/arch-inst-scr/master/files/NVIDIACONFIG.desktop
   chmod 644 NVIDIACONFIG.desktop
   mv NVIDIACONFIG.desktop ~/.config/autostart/NVIDIACONFIG.desktop
   sudo nvidia-xconfig --cool-bits=12
