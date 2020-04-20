@@ -18,7 +18,7 @@ cd yaourt/
 makepkg -si
 cd ..
 sudo rm -dR yaourt/ package-query/
-cd ~/
+cd /home/$USER
 
 echo 'Установить pamac?'
 read -p "1 - Да, 0 - Нет: " pamac_set
@@ -70,14 +70,17 @@ read -p "1 - Да, 0 - Нет: " nv_set
 if [[ $nv_set == 1 ]]; then
   wget https://raw.githubusercontent.com/zahar77735/arch-inst-scr/master/files/NVIDIACONFIG.desktop
   chmod 644 NVIDIACONFIG.desktop
-  mv NVIDIACONFIG.desktop ~/.config/autostart/NVIDIACONFIG.desktop
+  mkdir /home/$USER/.config/autostart/
+  cp NVIDIACONFIG.desktop ~/.config/autostart/NVIDIACONFIG.desktop
   sudo nvidia-xconfig --cool-bits=12
 elif [[ $nv_set == 0 ]]; then
   echo 'Ну нет так нет.'
 fi
 
-touch ~/.face
-ln -s ~/.face ~/.face.icon
+touch /home/$USER/.face
+ln -s /home/$USER/.face /home/$USER/.face.icon
+setfacl -m u:sddm:x /home/$USER/
+setfacl -m u:sddm:r /home/$USER/.face.icon
 
 sudo grub-mkconfig -o /boot/grub/grub.cfg
 
