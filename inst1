@@ -25,27 +25,42 @@ lsblk
 read -p "Выбор диска: " devsection
 cfdisk /dev/$devsection
 
-read -p "Выбор swap раздела: " swapsection
-mkswap /dev/$swapsection -L swap
-swapon /dev/$swapsection
-
-read -p "Выбор системного раздела: " rootsection
-
-
-echo '2.4.2 Форматирование диска'
-mkfs.btrfs -L "root" /dev/$rootsection
-
-echo '2.4.3 Монтирование диска'
-mount /dev/$rootsection /mnt
-
-echo '2.4.4 Создание подтомов'
-btrfs subvolume create /mnt/@
-btrfs subvolume create /mnt/@home
-btrfs subvolume list /mnt
-umount /mnt
-mount -o subvol=@,compress=lzo,relatime,space_cache,autodefrag /dev/$rootsection /mnt
-mkdir /mnt/home
-mount -o subvol=@home,compress=lzo,relatime,space_cache,autodefrag /dev/$rootsection /mnt/home
+echo "У Вас уже есть установленный Linux?"
+read -p "1 - Да, 0 - Нет: " new_system
+if [[ $new_system == 0 ]]; then
+  read -p "Выбор swap раздела: " swapsection
+  mkswap /dev/$swapsection -L swap
+  swapon /dev/$swapsection
+  read -p "Выбор системного раздела: " rootsection
+  echo '2.4.2 Форматирование диска'
+  mkfs.btrfs -L "root" /dev/$rootsection
+  echo '2.4.3 Монтирование диска'
+  mount /dev/$rootsection /mnt
+  echo '2.4.4 Создание подтомов'
+  btrfs subvolume create /mnt/@
+  btrfs subvolume create /mnt/@home
+  btrfs subvolume list /mnt
+  umount /mnt
+  mount -o subvol=@,compress=lzo,relatime,space_cache,autodefrag /dev/$rootsection /mnt
+  mkdir /mnt/home
+  mount -o subvol=@home,compress=lzo,relatime,space_cache,autodefrag /dev/$rootsection /mnt/home
+ elif [[ $new_system == 1 ]]; then
+  read -p "Выбор swap раздела: " swapsection
+  swapon /dev/$swapsection
+  read -p "Выбор системного раздела: " rootsection
+  echo '2.4.2 Форматирование диска'
+  mkfs.btrfs -L "new-root" /dev/$rootsection
+  echo '2.4.3 Монтирование диска'
+  mount /dev/$rootsection /mnt
+  echo '2.4.4 Создание подтомов'
+  btrfs subvolume create /mnt/@
+  btrfs subvolume create /mnt/@home
+  btrfs subvolume list /mnt
+  umount /mnt
+  mount -o subvol=@,compress=lzo,relatime,space_cache,autodefrag /dev/$rootsection /mnt
+  mkdir /mnt/home
+  mount -o subvol=@home,compress=lzo,relatime,space_cache,autodefrag /dev/$rootsection /mnt/home
+ fi
 
 echo '3.1 Выбор зеркал для загрузки. Ставим зеркало от Яндекс'
 echo "Server = http://mirror.yandex.ru/archlinux/\$repo/os/\$arch" > /etc/pacman.d/mirrorlist
