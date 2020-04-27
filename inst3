@@ -77,10 +77,16 @@ elif [[ $nv_set == 0 ]]; then
   echo 'Ну нет так нет.'
 fi
 
-touch /home/$USER/.face
-ln -s /home/$USER/.face /home/$USER/.face.icon
-setfacl -m u:sddm:x /home/$USER/
-setfacl -m u:sddm:r /home/$USER/.face.icon
+echo 'Вы установили KDE?'
+read -p "1 - Да, 0 - Нет: " kde_set
+if [[ $kde_set == 1 ]]; then
+  touch /home/$USER/.face
+  ln -s /home/$USER/.face /home/$USER/.face.icon
+  setfacl -m u:sddm:x /home/$USER/
+  setfacl -m u:sddm:r /home/$USER/.face.icon
+elif [[ $kde_set == 0 ]]; then
+  echo 'Ну нет так нет.'
+fi
 
 sudo grub-mkconfig -o /boot/grub/grub.cfg
 
