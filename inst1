@@ -45,8 +45,6 @@ if [[ $new_system == 0 ]]; then
   mkdir /mnt/home
   mount -o subvol=@home,compress=lzo,relatime,space_cache,autodefrag /dev/$rootsection /mnt/home
  elif [[ $new_system == 1 ]]; then
-  read -p "Выбор swap раздела: " swapsection
-  swapon /dev/$swapsection
   read -p "Выбор системного раздела: " rootsection
   echo '2.4.2 Форматирование диска'
   mkfs.btrfs -L "new-root" /dev/$rootsection
