@@ -31,13 +31,13 @@ nano /etc/mkinitcpio.conf
 echo 'Создадим загрузочный RAM диск'
 mkinitcpio -p linux
 
-#echo '3.5 Устанавливаем загрузчик'
-#pacman -S grub os-prober --noconfirm
-#read -p "Куда ставим загрузчик: " devsection
-#grub-install /dev/$devsection
+echo '3.5 Устанавливаем загрузчик'
+pacman -S grub os-prober --noconfirm
+read -p "Куда ставим загрузчик: " devsection
+grub-install /dev/$devsection
 
-#echo 'Обновляем grub.cfg'
-#grub-mkconfig -o /boot/grub/grub.cfg
+echo 'Обновляем grub.cfg'
+grub-mkconfig -o /boot/grub/grub.cfg
 
 echo 'Ставим программу для Wi-fi'
 pacman -S dialog wpa_supplicant --noconfirm 
