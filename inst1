@@ -47,7 +47,7 @@ if [[ $new_system == 0 ]]; then
  elif [[ $new_system == 1 ]]; then
   read -p "Выбор системного раздела: " rootsection
   echo '2.4.2 Форматирование диска'
-  mkfs.btrfs /dev/$rootsection
+  mkfs.btrfs -f /dev/$rootsection
   echo '2.4.3 Монтирование диска'
   mount /dev/$rootsection /mnt
   echo '2.4.4 Создание подтомов'
