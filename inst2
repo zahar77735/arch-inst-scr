@@ -76,9 +76,11 @@ pacman -S $gui_install
 echo "Какое DE ставим?"
 read -p "1 - XFCE, 2 - KDE, 3 - Gnome: " vm_setting
 if [[ $vm_setting == 1 ]]; then
-  pacman -S xfce4 xfce4-goodies lightdm --noconfirm
+  pacman -S xfce4 xfce4-goodies lightdm lightdm-gtk-greeter --noconfirm
   sleep 5
   systemctl enable lightdm
+  sleep 5
+  sed -i 's/#greeter-session=example-gtk-gnome/greeter-session=lightdm-gtk-greeter /' ./etc/lightdm/lightdm.conf
   sleep 5
 elif [[ $vm_setting == 2 ]]; then
   pacman -Sy plasma-meta kdebase sddm packagekit-qt5 qt5-xmlpatterns spectacle okular ark kvantum-qt5 latte-dock --noconfirm
