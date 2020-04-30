@@ -24,7 +24,8 @@ echo 'tmpfs /tmp tmpfs noatime,nodiratime,mode=1777,size=50% 0 0' | sudo tee -a 
 echo -e "vm.swappiness=10" | sudo tee -a /etc/sysctl.conf
 
 echo 'Установка доп. приложений'
-pacman -S linux linux-firmware linux-headers nano dhcpcd netctl btrfs-progs wget zsh mc
+pacman -S linux linux-firmware linux-headers nano dhcpcd netctl btrfs-progs wget zsh mc pkgfile
+pkgfile --update
 
 nano /etc/mkinitcpio.conf
 
@@ -76,7 +77,7 @@ pacman -S $gui_install
 echo "Какое DE ставим?"
 read -p "1 - XFCE, 2 - KDE, 3 - Gnome: " vm_setting
 if [[ $vm_setting == 1 ]]; then
-  pacman -S xfce4 xfce4-goodies lightdm lightdm-gtk-greeter file-roller --noconfirm
+  pacman -S xfce4 xfce4-goodies lightdm lightdm-gtk-greeter file-roller plank gnome-calculator alsa-plugins pulseaudio-alsa --noconfirm
   sleep 5
   systemctl enable lightdm
   sleep 5
