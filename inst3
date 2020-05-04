@@ -55,6 +55,7 @@ elif [[ $prog_set == 0 ]]; then
   echo 'Установка программ пропущена.'
 fi
 
+sudo pacman -S zsh
 chsh -s /bin/zsh
 curl -L http://install.ohmyz.sh | sh
 
