@@ -20,73 +20,66 @@ cd ..
 sudo rm -dR yaourt/ package-query/
 cd /home/$USER
 
-echo 'Установить pamac?'
-read -p "1 - Да, 0 - Нет: " pamac_set
-if [[ $pamac_set == 1 ]]; then
-  yaourt pamac-aur --noconfirm
-elif [[ $pamac_set == 0 ]]; then
-  echo 'Установка pamac пропущена.'
+read -p 'Установить pamac? [Y/n] ' pamac_set
+if [[ -z $pamac_set || $pamac_set == y || $pamac_set == Y ]]
+  then yaourt pamac-aur --noconfirm
+elif [[ $pamac_set == n || $pamac_set == N ]]
+  then echo 'Установка pamac пропущена.'
 fi
 
-echo 'Установить timeshift?'
-read -p "1 - Да, 0 - Нет: " timeshift_set
-if [[ $timeshift_set == 1 ]]; then
-  yaourt timeshift --noconfirm
+read -p 'Установить timeshift? [Y/n] ' timeshift_set
+if [[ -z $timeshift_set || $timeshift_set == y || $timeshift_set == Y ]]
+  then yaourt timeshift --noconfirm
   sudo pacman -Sy cron --noconfirm
-elif [[ $timeshift_set == 0 ]]; then
-  echo 'Установка timeshift пропущена.'
+elif [[ $timeshift_set == n || $timeshift_set == N ]]
+  then echo 'Установка timeshift пропущена.'
 fi
 
-echo 'Установить steam?'
-read -p "1 - Да, 0 - Нет: " steam_set
-if [[ $steam_set == 1 ]]; then
-  sudo pacman -S steam --noconfirm
-elif [[ $steam_set == 0 ]]; then
-  echo 'Установка timeshift пропущена.'
+read -p 'Установить steam? [Y/n] ' steam_set
+if [[ -z $steam_set || $steam_set == y || $steam_set == Y ]]
+  then sudo pacman -S steam --noconfirm
+elif [[ $steam_set == n || $steam_set == N ]]
+  then echo 'Установка timeshift пропущена.'
 fi
 
-echo 'Установить рекомендумые программы?'
-read -p "1 - Да, 0 - Нет: " prog_set
-if [[ $prog_set == 1 ]]; then
-  sudo pacman -S vlc audacious gimp libreoffice libreoffice-fresh-ru inkscape hwinfo libzip pstoedit mariadb-libs unixodbc libva-vdpau-driver --noconfirm
+read -p 'Установить рекомендумые программы? [Y/n] ' prog_set
+if [[ -z $prog_set || $prog_set == y || $prog_set == Y ]]
+  then sudo pacman -S vlc audacious gimp libreoffice libreoffice-fresh-ru inkscape hwinfo libzip pstoedit mariadb-libs unixodbc libva-vdpau-driver --noconfirm
   yaourt -S google-chrome --noconfirm 
   yaourt -S imagewriter --noconfirm
-elif [[ $prog_set == 0 ]]; then
-  echo 'Установка программ пропущена.'
+elif [[ $prog_set == n || $prog_set == N ]]
+  then echo 'Установка программ пропущена.'
 fi
 
 sudo pacman -S zsh
 chsh -s /bin/zsh
 curl -L http://install.ohmyz.sh | sh
 
-echo 'alias update-grub="grub-mkconfig -o /boot/grub/grub.cfg"' >> ~/.zshrc
 echo 'Включаем сетевой экран'
 sudo ufw enable
 
 echo 'Добавляем в автозагрузку:'
 sudo systemctl enable ufw
 
-echo 'У вас nVidia?'
-read -p "1 - Да, 0 - Нет: " nv_set
-if [[ $nv_set == 1 ]]; then
-  wget https://raw.githubusercontent.com/zahar77735/arch-inst-scr/master/files/NVIDIACONFIG.desktop
+read -p 'У вас проприетарный драйвер nVidia? [Y/n] ' nv_set
+if [[ -z $nv_set || $nv_set == y || $nv_set == Y ]]
+  then wget https://raw.githubusercontent.com/zahar77735/arch-inst-scr/master/files/NVIDIACONFIG.desktop
   chmod 644 NVIDIACONFIG.desktop
   mkdir /home/$USER/.config/autostart/
-  mv NVIDIACONFIG.desktop ~/.config/autostart/NVIDIACONFIG.desktop
+  mv NVIDIACONFIG.desktop ~/.config/autostart/nvidia-config.desktop
   sudo nvidia-xconfig --cool-bits=12
-elif [[ $nv_set == 0 ]]; then
-  echo 'Ну нет так нет.'
+elif [[ $nv_set == N || $nv_set == n ]]
+  then echo 'Ну нет так нет.'
 fi
 
-echo 'Вы установили KDE?'
-read -p "1 - Да, 0 - Нет: " kde_set
-if [[ $kde_set == 1 ]]; then
-  touch /home/$USER/.face
+read -p 'Вы установили KDE? [Y/n] ' kde_set
+if [[ -z $kde_set || $kde_set == Y || $kde_set == y ]]
+  then touch /home/$USER/.face
   ln -s /home/$USER/.face /home/$USER/.face.icon
   setfacl -m u:sddm:x /home/$USER/
   setfacl -m u:sddm:r /home/$USER/.face.icon
-elif [[ $kde_set == 0 ]]; then
-  echo 'Ну нет так нет.'
+elif [[ $kde_set == n || $kde_set == N ]]
+  then echo 'Ну нет так нет.'
 fi
 
 sudo grub-mkconfig -o /boot/grub/grub.cfg
