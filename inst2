@@ -101,24 +101,6 @@ elif [[ $vm_setting == g || $vm_setting == G ]]
   sleep 5
 fi
 
-read -p 'Ваша видеокарта nVidia? Установить проприетарный драйвер? [Y/n] ' nvidia_set
-if [[ -z $nvidia_set || $nvidia_set == y || $nvidia_set == Y ]]
-  then pacman -S nvidia-dkms nvidia-utils lib32-nvidia-utils nvidia-settings opencl-nvidia lib32-opencl-nvidia vulkan-icd-loader lib32-vulkan-icd-loader --noconfirm
-  sleep 15
-  sed -i 's/MODULES=(/MODULES=(nvidia nvidia_modeset nvidia_uvm nvidia_drm /' ./etc/mkinitcpio.conf
-  sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT="/GRUB_CMDLINE_LINUX_DEFAULT="nvidia-drm.modeset=1 /' ./etc/default/grub
-  sleep 10
-  mkinitcpio -p linux
-  grub-mkconfig -o /boot/grub/grub.cfg
-  mkdir /etc/pacman.d/hooks
-  wget https://raw.githubusercontent.com/zahar77735/arch-inst-scr/master/files/nvidia.hook
-  mv nvidia.hook /etc/pacman.d/hooks/nvidia.hook
-  chmod 644 /etc/pacman.d/hooks/nvidia.hook
-  sleep 10
-elif [[ $nvidia_set == n || $nvidia_set == N ]]; then
-  echo 'Установка пропущена.'
-fi
-
 echo "изменяем активный планировщик ввода-вывода"
 wget https://raw.githubusercontent.com/zahar77735/arch-inst-scr/master/files/60-ioschedulers.rules
 mv 60-ioschedulers.rules /etc/udev/rules.d/60-ioschedulers.rules
