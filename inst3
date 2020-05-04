@@ -72,7 +72,7 @@ if [[ $nv_set == 1 ]]; then
   wget https://raw.githubusercontent.com/zahar77735/arch-inst-scr/master/files/NVIDIACONFIG.desktop
   chmod 644 NVIDIACONFIG.desktop
   mkdir /home/$USER/.config/autostart/
-  cp NVIDIACONFIG.desktop ~/.config/autostart/NVIDIACONFIG.desktop
+  mv NVIDIACONFIG.desktop ~/.config/autostart/NVIDIACONFIG.desktop
   sudo nvidia-xconfig --cool-bits=12
 elif [[ $nv_set == 0 ]]; then
   echo 'Ну нет так нет.'
