@@ -78,11 +78,11 @@ if [[ -z $vm_setting ]]
 elif [[ $vm_setting == x || $vm_setting == X ]]
   then pacman -S xfce4 xfce4-goodies file-roller plank gnome-calculator alsa-plugins pulseaudio-alsa --noconfirm && read -p "Какой DM ставим LightDM или LXDM ? Указать [1,2] " dm_set
   if [[ $dm_set == 1 ]]
-    then pacman -S lightdm lightdm-gtk-greeter
-    systemctl enable lightdm
-    sleep 5
-    sed -i 's/#greeter-session=example-gtk-gnome/greeter-session=lightdm-gtk-greeter /' ./etc/lightdm/lightdm.conf
-    sleep 5
+		then pacman -S lightdm lightdm-gtk-greeter
+		systemctl enable lightdm
+		sleep 5
+		sed -i 's/#greeter-session=example-gtk-gnome/greeter-session=lightdm-gtk-greeter /' ./etc/lightdm/lightdm.conf
+		sleep 5
   elif [[ $dm_set == 2 ]]
     then pacman -S lxdm
     systemctl enable lxdm.service
