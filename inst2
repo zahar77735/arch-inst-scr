@@ -24,7 +24,7 @@ echo 'tmpfs /tmp tmpfs noatime,nodiratime,mode=1777,size=50% 0 0' | sudo tee -a 
 echo -e "vm.swappiness=10" | sudo tee -a /etc/sysctl.conf
 
 echo 'Установка доп. приложений'
-pacman -S linux linux-firmware linux-headers nano dhcpcd netctl btrfs-progs wget mc pkgfile
+pacman -S linux linux-firmware linux-headers nano dhcpcd netctl btrfs-progs wget mc pkgfile man
 pkgfile --update
 
 nano /etc/mkinitcpio.conf
@@ -74,23 +74,31 @@ echo 'Ставим иксы и драйвера'
 #pacman -S xorg-server xorg-drivers xorg-xinit
 pacman -S $gui_install
 
-echo "Какое DE ставим?"
-read -p "1 - XFCE, 2 - KDE, 3 - Gnome: " vm_setting
-if [[ $vm_setting == 1 ]]; then
-  pacman -S xfce4 xfce4-goodies lightdm lightdm-gtk-greeter file-roller plank gnome-calculator alsa-plugins pulseaudio-alsa --noconfirm
-  sleep 5
-  systemctl enable lightdm
-  sleep 5
-  sed -i 's/#greeter-session=example-gtk-gnome/greeter-session=lightdm-gtk-greeter /' ./etc/lightdm/lightdm.conf
-  sleep 5
-elif [[ $vm_setting == 2 ]]; then
-  pacman -Sy plasma-meta kdebase sddm packagekit-qt5 qt5-xmlpatterns spectacle okular ark kvantum-qt5 latte-dock --noconfirm
+read -p "Что ставим XFCE, KDE или GNOME ? Указать [G/X/K] Пропустить-Enter " vm_setting
+if [[ -z $vm_setting ]]
+	then echo "Пропускаем установку GUI"
+	sleep 5
+elif [[ $vm_setting == x || $vm_setting == X ]]
+  then pacman -S xfce4 xfce4-goodies file-roller plank gnome-calculator alsa-plugins pulseaudio-alsa --noconfirm && read -p "Какой DM ставим LightDM или LXDM ? Указать [1,2] " dm_set
+  if [[ $dm_set == 1 ]]
+    then pacman -S lightdm lightdm-gtk-greeter
+    systemctl enable lightdm
+    sleep 5
+    sed -i 's/#greeter-session=example-gtk-gnome/greeter-session=lightdm-gtk-greeter /' ./etc/lightdm/lightdm.conf
+    sleep 5
+  elif [[ $dm_set == 2 ]]
+    then pacman -S lxdm
+    systemctl enable lxdm.service
+    sleep 5
+  fi
+elif [[ $vm_setting == k || $vm_setting == K ]]
+  then pacman -Sy plasma-meta kdebase sddm packagekit-qt5 qt5-xmlpatterns spectacle okular ark kvantum-qt5 latte-dock --noconfirm
   sleep 5
   pacman -R konqueror --noconfirm
   systemctl enable sddm
   sleep 5
-elif [[ $vm_setting == 3 ]]; then  
-  pacman -S gnome gnome-shell gdm --noconfirm
+elif [[ $vm_setting == g || $vm_setting == G ]] 
+  then pacman -S gnome gnome-shell gdm --noconfirm
   sleep 5
   ssystemctl enable gdm
   sleep 5
