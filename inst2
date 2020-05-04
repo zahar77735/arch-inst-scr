@@ -24,7 +24,7 @@ echo 'tmpfs /tmp tmpfs noatime,nodiratime,mode=1777,size=50% 0 0' | sudo tee -a 
 echo -e "vm.swappiness=10" | sudo tee -a /etc/sysctl.conf
 
 echo 'Установка доп. приложений'
-pacman -S linux linux-firmware linux-headers nano dhcpcd netctl btrfs-progs wget zsh mc pkgfile
+pacman -S linux linux-firmware linux-headers nano dhcpcd netctl btrfs-progs wget mc pkgfile
 pkgfile --update
 
 nano /etc/mkinitcpio.conf
