@@ -46,6 +46,7 @@ read -p 'Установить рекомендумые программы? [Y/n]
 if [[ -z $prog_set || $prog_set == y || $prog_set == Y ]]
   then sudo pacman -S vlc audacious gimp inkscape hwinfo libzip pstoedit mariadb-libs unixodbc --noconfirm
   yaourt -S imagewriter --noconfirm
+  yaourt -S stacer --noconfirm
 elif [[ $prog_set == n || $prog_set == N ]]
   then echo 'Установка программ пропущена.'
 fi
