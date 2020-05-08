@@ -76,16 +76,20 @@ if [[ -z $vm_setting ]]
   then echo "Пропускаем установку GUI"
   sleep 5
 elif [[ $vm_setting == x || $vm_setting == X ]]
-  then pacman -S xfce4 xfce4-goodies file-roller plank gnome-calculator alsa-plugins pulseaudio-alsa --noconfirm && read -p "Какой DM ставим LightDM или LXDM ? Указать [1,2] " dm_set
+  then pacman -S xfce4 xfce4-goodies file-roller plank gnome-calculator alsa-plugins pulseaudio-alsa --noconfirm && read -p "Какой DM ставим LightDM, LXDM, GDM ? Указать [1,2,3] " dm_set
   if [[ $dm_set == 1 ]]
-    then pacman -S lightdm lightdm-gtk-greeter
+    then pacman -S lightdm lightdm-gtk-greeter --noconfirm
     systemctl enable lightdm
     sleep 5
     sed -i 's/#greeter-session=example-gtk-gnome/greeter-session=lightdm-gtk-greeter /' ./etc/lightdm/lightdm.conf
     sleep 5
   elif [[ $dm_set == 2 ]]
-    then pacman -S lxdm
+    then pacman -S lxdm --noconfirm
     systemctl enable lxdm.service
+    sleep 5
+  elif [[ $dm_set == 3 ]]
+    then pacman -S gdm --noconfirm
+    systemctl enable gdm
     sleep 5
   fi
 elif [[ $vm_setting == k || $vm_setting == K ]]
@@ -97,7 +101,7 @@ elif [[ $vm_setting == k || $vm_setting == K ]]
 elif [[ $vm_setting == g || $vm_setting == G ]] 
   then pacman -S gnome gnome-shell gdm --noconfirm
   sleep 5
-  ssystemctl enable gdm
+  systemctl enable gdm
   sleep 5
 fi
 
