@@ -89,7 +89,7 @@ elif [[ $nvidia_set == n || $nvidia_set == N ]]; then
   echo 'Установка пропущена.'
 fi
 
-read -p "Что ставим XFCE, KDE или GNOME ? Указать [G/X/K] Пропустить-Enter " vm_setting
+read -p "Что ставим XFCE, KDE, MATE или GNOME ? Указать [G/X/K/M] Пропустить-Enter " vm_setting
 if [[ -z $vm_setting ]]
   then echo "Пропускаем установку GUI"
   sleep 5
@@ -118,6 +118,11 @@ elif [[ $vm_setting == k || $vm_setting == K ]]
   sleep 5
 elif [[ $vm_setting == g || $vm_setting == G ]] 
   then pacman -S gnome gnome-shell gdm --noconfirm
+  sleep 5
+  systemctl enable gdm
+  sleep 5
+elif [[ $vm_setting == m || $vm_setting == M ]] 
+  then pacman -S mate gdm --noconfirm
   sleep 5
   systemctl enable gdm
   sleep 5
