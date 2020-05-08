@@ -87,13 +87,23 @@ elif [[ $nv_set == N || $nv_set == n ]]
   then echo 'Ну нет так нет.'
 fi
 
-read -p 'Вы установили KDE? [Y/n] ' kde_set
+read -p 'Вы установили SDDM? [Y/n] ' kde_set
 if [[ -z $kde_set || $kde_set == Y || $kde_set == y ]]
   then touch /home/$USER/.face
   ln -s /home/$USER/.face /home/$USER/.face.icon
   setfacl -m u:sddm:x /home/$USER/
   setfacl -m u:sddm:r /home/$USER/.face.icon
 elif [[ $kde_set == n || $kde_set == N ]]
+  then echo 'Ну нет так нет.'
+fi
+
+read -p 'Вы установили GDM? [Y/n] ' gdm_set
+if [[ -z $gdm_set || $gdm_set == Y || $gdm_set == y ]]
+  then touch /home/$USER/.face
+  ln -s /home/$USER/.face /home/$USER/.face.icon
+  setfacl -m u:gdm:x /home/$USER/
+  setfacl -m u:gdm:r /home/$USER/.face.icon
+elif [[ $gdm_set == n || $gdm_set == N ]]
   then echo 'Ну нет так нет.'
 fi
 
