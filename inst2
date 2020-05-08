@@ -116,7 +116,7 @@ elif [[ $vm_setting == g || $vm_setting == G ]]
   systemctl enable gdm
   sleep 5
 elif [[ $vm_setting == m || $vm_setting == M ]] 
-  then pacman -S mate mate-terminal lightdm-gtk-greeter --noconfirm
+  then pacman -S mate mate-terminal lightdm-gtk-greeter file-roller pank --noconfirm
   sleep 5
   systemctl enable lidhtdm
   sleep 5
