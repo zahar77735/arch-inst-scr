@@ -111,9 +111,16 @@ elif [[ $vm_setting == k || $vm_setting == K ]]
   systemctl enable sddm
   sleep 5
 elif [[ $vm_setting == g || $vm_setting == G ]] 
-  then pacman -S gnome gnome-shell gdm --noconfirm
-  sleep 5
-  systemctl enable gdm
+  then pacman -S gnome gnome-shell --noconfirm && read -p "Какой DM ставим LightDM, GDM ? Указать [1,2] " dm_set
+  if [[ $dm_set == 1 ]]
+    then pacman -S lightdm-gtk-greeter --noconfirm
+    systemctl enable lightdm
+    sleep 5
+  elif [[ $dm_set == 2 ]]
+    then pacman -S gdm --noconfirm
+    systemctl enable gdm
+    sleep 5
+  fi
   sleep 5
 elif [[ $vm_setting == m || $vm_setting == M ]] 
   then pacman -S mate mate-terminal lightdm-gtk-greeter gnome-calculator gedit file-roller evince pank alsa-plugins pulseaudio-alsa --noconfirm
