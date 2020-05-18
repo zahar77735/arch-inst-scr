@@ -64,9 +64,9 @@ pacman -Syy
 
 read -p "Вы устанавливаете Arch Linux на виртуальную машину? [N/y]" vm_set
 if [[ -z $vm_set || $vm_set == n || $vm_set == N ]]
-  then gui_install="xorg-server xorg-drivers xorg-xinit"
+  then gui_install="xorg-server xorg-drivers xorg-xinit --noconfirm"
 elif [[ $vm_set == y || $vm_set == Y ]]
-  then gui_install="xorg-server xorg-drivers xorg-xinit virtualbox-guest-utils"
+  then gui_install="xorg-server xorg-drivers xorg-xinit virtualbox-guest-utils --noconfirm"
 fi
 
 pacman -S $gui_install
@@ -111,7 +111,7 @@ elif [[ $vm_setting == k || $vm_setting == K ]]
   systemctl enable sddm
   sleep 5
 elif [[ $vm_setting == g || $vm_setting == G ]] 
-  then pacman -S gnome gnome-shell --noconfirm && read -p "Какой DM ставим LightDM, GDM ? Указать [1,2] " dm_set
+  then pacman -S gnome gnome-shell gnome-tweaks --noconfirm && read -p "Какой DM ставим LightDM, GDM ? Указать [1,2] " dm_set
   if [[ $dm_set == 1 ]]
     then pacman -S lightdm-gtk-greeter --noconfirm
     systemctl enable lightdm
