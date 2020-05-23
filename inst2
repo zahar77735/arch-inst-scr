@@ -136,7 +136,7 @@ chmod 644 /etc/udev/rules.d/60-ioschedulers.rules
 sleep 5
 
 echo 'Ставим шрифты'
-pacman -S ttf-liberation ttf-dejavu --noconfirm 
+pacman -S ttf-liberation ttf-dejavu ttf-ubuntu-font-family --noconfirm 
 
 echo 'Ставим сеть'
 pacman -S networkmanager network-manager-applet ppp --noconfirm
