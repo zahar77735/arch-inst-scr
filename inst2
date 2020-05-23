@@ -40,6 +40,21 @@ grub-install /dev/$devsection
 echo 'Обновляем grub.cfg'
 grub-mkconfig -o /boot/grub/grub.cfg
 
+read -p "Установить тему Tela для GRUB? [Y/n]" themes_grub
+if [[ -z $themes_grub || $themes_grub == y || $themes_grub == Y ]]
+  then wget https://raw.githubusercontent.com/zahar77735/arch-inst-scr/master/files/Tela.tar.xz
+  tar xvJf Tela.tar.xz
+  rm Tela.tar.xz
+  mkdir /boot/grub/themes
+  cp -a Tela /boot/grub/themes
+  rm -rf Tela
+  grep "GRUB_THEME=" /etc/default/grub 2>&1 >/dev/null && sed -i '/GRUB_THEME=/d' /etc/default/grub
+  echo "GRUB_THEME=\"/boot/grub/themes/Tela/theme.txt\"" >> /etc/default/grub
+  grub-mkconfig -o /boot/grub/grub.cfg
+elif [[ $nvidia_set == n || $nvidia_set == N ]]; then
+  echo 'Установка пропущена.'
+fi
+
 echo 'Ставим программу для Wi-fi'
 pacman -S dialog wpa_supplicant --noconfirm 
 
