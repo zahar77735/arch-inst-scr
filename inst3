@@ -107,6 +107,9 @@ elif [[ $gdm_set == n || $gdm_set == N ]]
   then echo 'Ну нет так нет.'
 fi
 
+#wget https://raw.githubusercontent.com/zahar77735/arch-inst-scr/master/files/DesktopBackgroundSlide.tar.xz
+
+
 sudo grub-mkconfig -o /boot/grub/grub.cfg
 
 echo 'Установка завершена!'
