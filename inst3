@@ -21,14 +21,14 @@ cd ..
 sudo rm -dR yaourt/ package-query/
 cd /home/$USER
 
-read -p 'Установить pamac? [Y/n] ' pamac_set
+read -p 'Установить Pamac? [Y/n] ' pamac_set
 if [[ -z $pamac_set || $pamac_set == y || $pamac_set == Y ]]
   then yaourt pamac-aur --noconfirm
 elif [[ $pamac_set == n || $pamac_set == N ]]
   then echo 'Установка pamac пропущена.'
 fi
 
-read -p 'Установить timeshift? [Y/n] ' timeshift_set
+read -p 'Установить TimeShift? [Y/n] ' timeshift_set
 if [[ -z $timeshift_set || $timeshift_set == y || $timeshift_set == Y ]]
   then yaourt timeshift --noconfirm
   sudo pacman -Sy cron --noconfirm
@@ -36,10 +36,17 @@ elif [[ $timeshift_set == n || $timeshift_set == N ]]
   then echo 'Установка timeshift пропущена.'
 fi
 
-read -p 'Установить steam? [Y/n] ' steam_set
+read -p 'Установить Steam? [Y/n] ' steam_set
 if [[ -z $steam_set || $steam_set == y || $steam_set == Y ]]
   then sudo pacman -S steam --noconfirm
 elif [[ $steam_set == n || $steam_set == N ]]
+  then echo 'Установка timeshift пропущена.'
+fi
+
+read -p 'Установить Stacer? [Y/n] ' shift_set
+if [[ -z $shift_set || $shift_set == y || $shift_set == Y ]]
+  then yaourt -S stacer --noconfirm
+elif [[ $shift_set == n || $shift_set == N ]]
   then echo 'Установка timeshift пропущена.'
 fi
 
@@ -47,7 +54,6 @@ read -p 'Установить рекомендумые программы? [Y/n]
 if [[ -z $prog_set || $prog_set == y || $prog_set == Y ]]
   then sudo pacman -S vlc audacious gimp inkscape hwinfo libzip pstoedit mariadb-libs unixodbc --noconfirm
   yaourt -S imagewriter --noconfirm
-  yaourt -S stacer --noconfirm
 elif [[ $prog_set == n || $prog_set == N ]]
   then echo 'Установка программ пропущена.'
 fi
@@ -88,7 +94,7 @@ elif [[ $nv_set == N || $nv_set == n ]]
   then echo 'Ну нет так нет.'
 fi
 
-read -p 'Вы установили SDDM? [Y/n] ' kde_set
+read -p 'Вы установили KDE? [Y/n] ' kde_set
 if [[ -z $kde_set || $kde_set == Y || $kde_set == y ]]
   then touch /home/$USER/.face
   ln -s /home/$USER/.face /home/$USER/.face.icon
@@ -98,7 +104,7 @@ elif [[ $kde_set == n || $kde_set == N ]]
   then echo 'Ну нет так нет.'
 fi
 
-read -p 'Вы установили GDM? [Y/n] ' gdm_set
+read -p 'Вы установили GNOME? [Y/n] ' gdm_set
 if [[ -z $gdm_set || $gdm_set == Y || $gdm_set == y ]]
   then touch /home/$USER/.face
   ln -s /home/$USER/.face /home/$USER/.face.icon
