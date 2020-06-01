@@ -61,8 +61,10 @@ fi
 read -p 'Установить Google-Chrome или Chromium? [G/c] ' chrome_set
 if [[ -z $chrome_set || $chrome_set == g || $chrome_set == G ]]
   then  yaourt -S google-chrome --noconfirm
+  yaourt -S chrome-gnome-shell-git --noconfirm
 elif [[ $chrome_set == c || $chrome_set == C ]]
   then sudo pacman -S chromium --noconfirm
+  yaourt -S chrome-gnome-shell-git --noconfirm
   else echo "Как хотите. "
 fi
 
@@ -73,7 +75,7 @@ elif [[ $of_set == n || $of_set == N ]]
   then echo 'Установка пропущена.'
 fi
 
-sudo pacman -S zsh
+sudo pacman -S zsh --noconfirm
 chsh -s /bin/zsh
 curl -L http://install.ohmyz.sh | sh
 
@@ -110,6 +112,14 @@ if [[ -z $gdm_set || $gdm_set == Y || $gdm_set == y ]]
   ln -s /home/$USER/.face /home/$USER/.face.icon
   setfacl -m u:gdm:x /home/$USER/
   setfacl -m u:gdm:r /home/$USER/.face.icon
+  wget https://raw.githubusercontent.com/zahar77735/arch-inst-scr/master/files/background.tar.xz
+  mv background.tar.xz /home/$USER/.local/share/1.tar.xz
+  cd /home/$USER/.local/share
+  tar xvJf 1.tar.xz
+  rm 1.tar.xz
+  cd background
+  asd=`pwd`
+  bash ./bgxml-gen $asd 10 3
 elif [[ $gdm_set == n || $gdm_set == N ]]
   then echo 'Ну нет так нет.'
 fi
