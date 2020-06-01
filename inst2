@@ -153,19 +153,6 @@ elif [[ $nvidia_set == n || $nvidia_set == N ]]; then
   echo 'Установка пропущена.'
 fi
 
-read -p "Установить тему MacOS? [Y/n]" vm_set
-if [[ -z $vm_set || $vm_set == y || $vm_set == Y ]]
-  then wget https://raw.githubusercontent.com/zahar77735/arch-inst-scr/master/files/MacOS.tar.xz
-  mv MacOS.tar.xz /1.tar.xz
-  cd /
-  tar xvJf 1.tar.xz
-  rm 1.tar.xz
-  fc-cache -fv
-  gtk-update-icon-cache /usr/share/icons/Mojave-CT-Classic
-elif [[ $vm_set == n || $vm_set == N ]]
-  then echo 'Установка пропущена.'
-fi
-
 echo 'Установка завершена! Перезагрузите систему.'
 
 exit
