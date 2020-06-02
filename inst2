@@ -25,7 +25,7 @@ touch /etc/sysctl.d/99-sysctl.conf
 echo 'vm.swappiness=10' >> /etc/sysctl.d/99-sysctl.conf
 
 echo 'Установка доп. приложений'
-pacman -S linux linux-firmware linux-headers nano dhcpcd netctl btrfs-progs wget mc pkgfile man --noconfirm
+pacman -S btrfs-progs wget mc pkgfile man --noconfirm
 pkgfile --update
 
 nano /etc/mkinitcpio.conf
@@ -52,7 +52,7 @@ if [[ -z $themes_grub || $themes_grub == y || $themes_grub == Y ]]
   grep "GRUB_THEME=" /etc/default/grub 2>&1 >/dev/null && sed -i '/GRUB_THEME=/d' /etc/default/grub
   echo "GRUB_THEME=\"/boot/grub/themes/Tela/theme.txt\"" >> /etc/default/grub
   grub-mkconfig -o /boot/grub/grub.cfg
-elif [[ $nvidia_set == n || $nvidia_set == N ]]; then
+elif [[ $themes_grub == n || $themes_grub == N ]]; then
   echo 'Установка пропущена.'
 fi
 
