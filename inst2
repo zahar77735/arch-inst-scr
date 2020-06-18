@@ -103,7 +103,7 @@ elif [[ $vm_setting == x || $vm_setting == X ]]
     sleep 5
   fi
 elif [[ $vm_setting == k || $vm_setting == K ]]
-  then pacman -Sy plasma-meta kdebase sddm packagekit-qt5 qt5-xmlpatterns spectacle okular ark kvantum-qt5 latte-dock --noconfirm
+  then pacman -Sy plasma sddm packagekit-qt5 qt5-xmlpatterns spectacle okular ark --noconfirm
   sleep 5
   pacman -R konqueror --noconfirm
   systemctl enable sddm
