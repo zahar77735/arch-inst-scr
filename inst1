@@ -15,6 +15,7 @@ lsblk
 
 read -p "Выбор диска: " devsection
 cfdisk /dev/$devsection
+clear
 
 read -p "У Вас уже есть установленный Linux? [Y/n] " new_system
  if [[ -z $new_system || $new_system == y || $new_system == Y ]]
@@ -51,17 +52,21 @@ elif [[ $new_system == n || $new_system == N ]]
   mkdir /mnt/home
   mount -o subvol=@home,compress=lzo,relatime,space_cache,autodefrag /dev/$rootsection /mnt/home
  fi
+ clear
 
 echo '3.1 Выбор зеркал для загрузки. Ставим зеркало от Яндекс'
 echo "Server = http://mirror.yandex.ru/archlinux/\$repo/os/\$arch" > /etc/pacman.d/mirrorlist
 echo "Server = https://mirror.yandex.ru/archlinux/\$repo/os/\$arch" > /etc/pacman.d/mirrorlist
 echo "Server = http://mirror.rol.ru/archlinux/\$repo/os/\$arch" > /etc/pacman.d/mirrorlist
 echo "Server = https://mirror.rol.ru/archlinux/\$repo/os/\$arch" > /etc/pacman.d/mirrorlist
+clear
 
 echo '3.2 Установка основных пакетов'
 pacstrap /mnt base base-devel linux linux-firmware linux-headers nano dhcpcd netctl
+clear
 
 echo '3.3 Настройка системы'
 genfstab -pU /mnt >> /mnt/etc/fstab
+clear
 
 arch-chroot /mnt sh -c "$(curl -fsSL git.io/inst2)"
