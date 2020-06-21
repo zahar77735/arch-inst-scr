@@ -1,11 +1,13 @@
 #!/bin/bash
 echo 'Создаем нужные директории'
+sleep 5
 sudo pacman -S xdg-user-dirs --noconfirm
 xdg-user-dirs-update
 touch /home/$USER/'Шаблоны'/'Файл'
 
 echo 'export MAKEFLAGS="-j$(nproc)"' >> /home/$USER/.bashrc
 source /home/$USER/.bashrc
+sleep 5
 clear
 
 echo 'Установка программ'
