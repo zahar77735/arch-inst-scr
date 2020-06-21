@@ -11,33 +11,60 @@ echo 'Установка программ'
 sudo pacman -S curl gparted gpart gnome-disk-utility ffmpeg gthumb git yajl ufw f2fs-tools dosfstools mtools ntfs-3g alsa-lib alsa-utils p7zip unrar gvfs aspell-ru pulseaudio pavucontrol --noconfirm
 sudo pacman -R firefox --noconfirm
 
-echo 'Установка yaourt'
-cd /tmp
-git clone https://aur.archlinux.org/package-query.git
-cd package-query/
-makepkg -si
-cd ..
-git clone https://aur.archlinux.org/yaourt.git
-cd yaourt/
-makepkg -si
-cd ..
-sudo rm -dR yaourt/ package-query/
-cd /home/$USER
+clear
 
-read -p 'Установить Pamac? [Y/n] ' pamac_set
-if [[ -z $pamac_set || $pamac_set == y || $pamac_set == Y ]]
-  then yaourt pamac-aur --noconfirm
-elif [[ $pamac_set == n || $pamac_set == N ]]
-  then echo 'Установка pamac пропущена.'
-fi
+echo 'Установка AUR'
+# Создаём yay_install директорию и переходим в неё
+mkdir -p /tmp/yay_install
+cd /tmp/yay_install
+
+# Установка "yay" из AUR
+git clone https://aur.archlinux.org/yay.git
+cd yay
+makepkg -sir --needed --noconfirm --skippgpcheck
+cd ..
+rm -rf yay_install
+clear
+
+# Создаём pamac-aur_install директорию и переходим в неё
+mkdir -p /tmp/pamac-aur_install
+cd /tmp/pamac-aur_install
+
+# Установка "pamac-aur" из AUR
+git clone https://aur.archlinux.org/pamac-aur.git
+cd pamac-aur
+makepkg -si --needed --noconfirm --skippgpcheck
+cd ..
+rm -rf pamac-aur_install
+clear
+
+#cd /tmp
+#git clone https://aur.archlinux.org/package-query.git
+#cd package-query/
+#makepkg -si
+#cd ..
+#git clone https://aur.archlinux.org/yaourt.git
+#cd yaourt/
+#makepkg -si
+#cd ..
+#sudo rm -dR yaourt/ package-query/
+#cd /home/$USER
+
+#read -p 'Установить Pamac? [Y/n] ' pamac_set
+#if [[ -z $pamac_set || $pamac_set == y || $pamac_set == Y ]]
+#  then yaourt pamac-aur --noconfirm
+#elif [[ $pamac_set == n || $pamac_set == N ]]
+#  then echo 'Установка pamac пропущена.'
+#fi
 
 read -p 'Установить TimeShift? [Y/n] ' timeshift_set
 if [[ -z $timeshift_set || $timeshift_set == y || $timeshift_set == Y ]]
-  then yaourt timeshift --noconfirm
+  then yay timeshift --noconfirm
   sudo pacman -Sy cron --noconfirm
 elif [[ $timeshift_set == n || $timeshift_set == N ]]
   then echo 'Установка timeshift пропущена.'
 fi
+clear
 
 read -p 'Установить Steam? [Y/n] ' steam_set
 if [[ -z $steam_set || $steam_set == y || $steam_set == Y ]]
@@ -45,31 +72,35 @@ if [[ -z $steam_set || $steam_set == y || $steam_set == Y ]]
 elif [[ $steam_set == n || $steam_set == N ]]
   then echo 'Установка timeshift пропущена.'
 fi
+clear
 
 read -p 'Установить Stacer? [Y/n] ' shift_set
 if [[ -z $shift_set || $shift_set == y || $shift_set == Y ]]
-  then yaourt -S stacer --noconfirm
+  then yay -S stacer --noconfirm
 elif [[ $shift_set == n || $shift_set == N ]]
   then echo 'Установка timeshift пропущена.'
 fi
+clear
 
 read -p 'Установить рекомендумые программы? [Y/n] ' prog_set
 if [[ -z $prog_set || $prog_set == y || $prog_set == Y ]]
   then sudo pacman -S vlc audacious gimp inkscape hwinfo libzip pstoedit mariadb-libs unixodbc --noconfirm
-  yaourt -S imagewriter --noconfirm
+  yay -S imagewriter --noconfirm
 elif [[ $prog_set == n || $prog_set == N ]]
   then echo 'Установка программ пропущена.'
 fi
+clear
 
 read -p 'Установить Google-Chrome или Chromium? [G/c] ' chrome_set
 if [[ -z $chrome_set || $chrome_set == g || $chrome_set == G ]]
-  then  yaourt -S google-chrome --noconfirm
+  then  yay -S google-chrome --noconfirm
 #  yaourt -S chrome-gnome-shell-git --noconfirm
 elif [[ $chrome_set == c || $chrome_set == C ]]
   then sudo pacman -S chromium --noconfirm
 #  yaourt -S chrome-gnome-shell-git --noconfirm
   else echo "Как хотите. "
 fi
+clear
 
 read -p 'Установить Libre Office ? [Y/n] ' of_set
 if [[ -z $of_set || $of_set == y || $of_set == Y ]]
@@ -77,17 +108,20 @@ if [[ -z $of_set || $of_set == y || $of_set == Y ]]
 elif [[ $of_set == n || $of_set == N ]]
   then echo 'Установка пропущена.'
 fi
+clear
 
 read -p 'Установить Visual Studio ? [Y/n] ' of_set
 if [[ -z $of_set || $of_set == y || $of_set == Y ]]
-  then yaourt visual-studio-code-bin --noconfirm
+  then yay visual-studio-code-bin --noconfirm
 elif [[ $of_set == n || $of_set == N ]]
   then echo 'Установка пропущена.'
 fi
+clear
 
 sudo pacman -S zsh --noconfirm
 chsh -s /bin/zsh
 curl -L http://install.ohmyz.sh | sh
+clear
 
 echo 'Включаем сетевой экран'
 sudo ufw enable
@@ -97,6 +131,7 @@ sudo systemctl enable ufw
 
 echo 'export MAKEFLAGS="-j$(nproc)"' >> /home/$USER/.zshrc
 source /home/$USER/.zshrc
+clear
 
 read -p 'У вас проприетарный драйвер nVidia? [Y/n] ' nv_set
 if [[ -z $nv_set || $nv_set == y || $nv_set == Y ]]
@@ -108,6 +143,7 @@ if [[ -z $nv_set || $nv_set == y || $nv_set == Y ]]
 elif [[ $nv_set == N || $nv_set == n ]]
   then echo 'Ну нет так нет.'
 fi
+clear
 
 read -p 'Вы установили KDE? [Y/n] ' kde_set
 if [[ -z $kde_set || $kde_set == Y || $kde_set == y ]]
@@ -118,6 +154,7 @@ if [[ -z $kde_set || $kde_set == Y || $kde_set == y ]]
 elif [[ $kde_set == n || $kde_set == N ]]
   then echo 'Ну нет так нет.'
 fi
+clear
 
 read -p 'Вы установили GNOME? [Y/n] ' gdm_set
 if [[ -z $gdm_set || $gdm_set == Y || $gdm_set == y ]]
@@ -136,11 +173,13 @@ if [[ -z $gdm_set || $gdm_set == Y || $gdm_set == y ]]
 elif [[ $gdm_set == n || $gdm_set == N ]]
   then echo 'Ну нет так нет.'
 fi
+clear
 
 #wget https://raw.githubusercontent.com/zahar77735/arch-inst-scr/master/files/DesktopBackgroundSlide.tar.xz
 
 
 sudo grub-mkconfig -o /boot/grub/grub.cfg
+clear
 
 echo 'Установка завершена!'
 
