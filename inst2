@@ -119,7 +119,7 @@ if [[ -z $vm_setting ]]
   then echo "Пропускаем установку GUI"
   sleep 5
 elif [[ $vm_setting == x || $vm_setting == X ]]
-  then pacman -S xfce4 xfce4-goodies file-roller plank gnome-calculator evince alsa-plugins pulseaudio-alsa --noconfirm && read -p "Какой DM ставим LightDM, LXDM ? Указать [1,2] " dm_set
+  then pacman -S xfce4 xfce4-goodies file-roller gthumb plank gnome-calculator evince alsa-plugins pulseaudio-alsa --noconfirm && read -p "Какой DM ставим LightDM, LXDM ? Указать [1,2] " dm_set
   if [[ $dm_set == 1 ]]
     then pacman -S lightdm-gtk-greeter --noconfirm
     systemctl enable lightdm
@@ -130,17 +130,17 @@ elif [[ $vm_setting == x || $vm_setting == X ]]
     sleep 5
   fi
 elif [[ $vm_setting == k || $vm_setting == K ]]
-  then pacman -Sy plasma konsole kate dolphin sddm packagekit-qt5 qt5-xmlpatterns spectacle okular ark --noconfirm
+  then pacman -Sy plasma konsole kate dolphin sddm packagekit-qt5 qt5-xmlpatterns spectacle okular ark gwenview --noconfirm
   sleep 5
   systemctl enable sddm
   sleep 5
 elif [[ $vm_setting == g || $vm_setting == G ]] 
-  then pacman -S gnome gnome-shell gdm gnome-tweaks --noconfirm
+  then pacman -S gnome gnome-shell gdm gnome-tweaks gthumb --noconfirm
   sleep 5
   systemctl enable gdm
   sleep 5
 elif [[ $vm_setting == m || $vm_setting == M ]] 
-  then pacman -S mate mate-terminal lightdm-gtk-greeter gnome-calculator gedit file-roller evince pank alsa-plugins pulseaudio-alsa --noconfirm
+  then pacman -S mate mate-terminal lightdm-gtk-greeter gthumb gnome-calculator gedit file-roller evince pank alsa-plugins pulseaudio-alsa --noconfirm
   sleep 5
   systemctl enable lidhtdm
   sleep 5
