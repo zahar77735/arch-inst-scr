@@ -16,30 +16,30 @@ sudo pacman -R firefox --noconfirm
 
 clear
 
-echo 'Установка AUR'
+#echo 'Установка AUR'
 # Создаём yay_install директорию и переходим в неё
-mkdir -p /tmp/yay_install
-cd /tmp/yay_install
+#mkdir -p /tmp/yay_install
+#cd /tmp/yay_install
 
 # Установка "yay" из AUR
-git clone https://aur.archlinux.org/yay.git
-cd yay
-makepkg -sir --needed --noconfirm --skippgpcheck
-cd ..
-rm -rf yay_install
-clear
+#git clone https://aur.archlinux.org/yay.git
+#cd yay
+#makepkg -sir --needed --noconfirm --skippgpcheck
+#cd ..
+#rm -rf yay_install
+#clear
 
 # Создаём pamac-aur_install директорию и переходим в неё
-mkdir -p /tmp/pamac-aur_install
-cd /tmp/pamac-aur_install
+#mkdir -p /tmp/pamac-aur_install
+#cd /tmp/pamac-aur_install
 
 # Установка "pamac-aur" из AUR
-git clone https://aur.archlinux.org/pamac-aur.git
-cd pamac-aur
-makepkg -si --needed --noconfirm --skippgpcheck
-cd ..
-rm -rf pamac-aur_install
-clear
+#git clone https://aur.archlinux.org/pamac-aur.git
+#cd pamac-aur
+#makepkg -si --needed --noconfirm --skippgpcheck
+#cd ..
+#rm -rf pamac-aur_install
+#clear
 
 #cd /tmp
 #git clone https://aur.archlinux.org/package-query.git
