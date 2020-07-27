@@ -62,7 +62,7 @@ echo "Server = https://mirror.rol.ru/archlinux/\$repo/os/\$arch" > /etc/pacman.d
 clear
 
 echo '3.2 Установка основных пакетов'
-pacstrap /mnt base base-devel linux linux-firmware linux-headers nano dhcpcd netctl
+pacstrap /mnt base base-devel linux-zen linux-firmware linux-zen-headers nano dhcpcd netctl
 clear
 
 echo '3.3 Настройка системы'
