@@ -81,11 +81,14 @@ elif [[ $newfs == e || $newfs == E ]]; then
    read -p "Введите имя метки тома :" mark
    mkfs.ext4 -L $mark /dev/$rootsection
    mount /dev/$rootsection /mnt
-   fallocate -l 16G /swapfile
-   chmod 600 /swapfile
-   dd if=/dev/zero of=/swapfile bs=1024k count=16000
-   mkswap /swapfile
-   swapon /swapfile
+   echo 'Создаём swap файл'
+   fallocate -l 16G /mnt/swapfile
+   chmod 600 /mnt/swapfile
+   echo 'Форматируем swap'
+   dd if=/dev/zero of=/mnt/swapfile bs=1024k count=16000
+   echo 'Подключаем swap'
+   mkswap /mnt/swapfile
+   swapon /mnt/swapfile
   fi
 fi
 clear
@@ -98,7 +101,7 @@ echo "Server = https://mirror.rol.ru/archlinux/\$repo/os/\$arch" > /etc/pacman.d
 clear
 
 echo '3.2 Установка основных пакетов'
-pacstrap /mnt base base-devel linux-zen linux-firmware linux-zen-headers nano dhcpcd netctl
+pacstrap /mnt base base-devel linux-zen linux-firmware linux-zen-headers crda nano dhcpcd netctl
 clear
 
 echo '3.3 Настройка системы'
