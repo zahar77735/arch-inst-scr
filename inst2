@@ -30,7 +30,7 @@ echo 'vm.swappiness=10' >> /etc/sysctl.d/99-sysctl.conf
 clear
 
 echo 'Установка доп. приложений'
-pacman -S btrfs-progs wget mc pkgfile man git --noconfirm
+pacman -S wget mc pkgfile man --noconfirm
 pkgfile --update
 
 nano /etc/mkinitcpio.conf
@@ -38,7 +38,7 @@ nano /etc/mkinitcpio.conf
 clear
 
 echo 'Создадим загрузочный RAM диск'
-mkinitcpio -p linux
+mkinitcpio -p linux-zen
 
 clear
 
@@ -178,7 +178,7 @@ if [[ -z $nvidia_set || $nvidia_set == y || $nvidia_set == Y ]]
   sed -i 's/MODULES=(/MODULES=(nvidia nvidia_modeset nvidia_uvm nvidia_drm /' ./etc/mkinitcpio.conf
   sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT="/GRUB_CMDLINE_LINUX_DEFAULT="nvidia-drm.modeset=1 /' ./etc/default/grub
   sleep 10
-  mkinitcpio -p linux
+  mkinitcpio -p linux-zen
   grub-mkconfig -o /boot/grub/grub.cfg
   mkdir /etc/pacman.d/hooks
   wget https://raw.githubusercontent.com/zahar77735/arch-inst-scr/master/files/nvidia.hook
@@ -190,32 +190,6 @@ elif [[ $nvidia_set == n || $nvidia_set == N ]]; then
 fi
 
 clear
-
-echo 'Установка AUR'
-# Создаём yay_install директорию и переходим в неё
-mkdir -p /tmp/yay_install
-cd /tmp/yay_install
-
-# Установка "yay" из AUR
-git clone https://aur.archlinux.org/yay.git
-cd yay
-makepkg -sir --needed --noconfirm --skippgpcheck
-cd ..
-rm -rf yay_install
-clear
-
-# Создаём pamac-aur_install директорию и переходим в неё
-mkdir -p /tmp/pamac-aur_install
-cd /tmp/pamac-aur_install
-
-# Установка "pamac-aur" из AUR
-git clone https://aur.archlinux.org/pamac-aur.git
-cd pamac-aur
-makepkg -si --needed --noconfirm --skippgpcheck
-cd ..
-rm -rf pamac-aur_install
-clear
-
 
 echo 'Установка завершена! Перезагрузите систему.'
 
