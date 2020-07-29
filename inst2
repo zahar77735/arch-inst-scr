@@ -29,6 +29,13 @@ echo 'vm.swappiness=10' >> /etc/sysctl.d/99-sysctl.conf
 
 clear
 
+read -p "Ваша файловая система BTRFS? [Y/n]" btr
+if [[ -z $btr || $btr == y || $btr == Y ]]; then
+  pacman -S btrfs-progs
+elif [[ $btr == n || $btr == N ]]; then
+  echo 'Установка пропущена.'
+fi
+
 echo 'Установка доп. приложений'
 pacman -S wget mc pkgfile man --noconfirm
 pkgfile --update
