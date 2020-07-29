@@ -17,19 +17,6 @@ read -p "Выбор диска: " devsection
 cfdisk /dev/$devsection
 clear
 
-#echo '2.4.2 Форматирование дисков'
-#mkfs.ext2  /dev/sda1 -L boot
-#mkfs.ext4  /dev/sda2 -L root
-#mkswap /dev/sda3 -L swap
-#mkfs.ext4  /dev/sda4 -L home
-
-#echo '2.4.3 Монтирование дисков'
-#mount /dev/sda2 /mnt
-#mkdir /mnt/{boot,home}
-#mount /dev/sda1 /mnt/boot
-#swapon /dev/sda3
-#mount /dev/sda4 /mnt/home
-
 read -p "Выбор файловой системы. либо EXT4 -e, либо BTRFS -b [B/e] " newfs
 if [[ -z $newfs || $newfs == b || $newfs == B ]]; then
  read -p "На диске имеется swap раздел? [Y/n] " new_system
@@ -101,12 +88,11 @@ echo "Server = https://mirror.rol.ru/archlinux/\$repo/os/\$arch" > /etc/pacman.d
 clear
 
 echo '3.2 Установка основных пакетов'
-pacstrap /mnt base base-devel linux-zen linux-firmware linux-zen-headers crda nano dhcpcd netctl
+pacstrap /mnt base base-devel linux-zen linux-firmware linux-zen-headers crda amd-ucode nano dhcpcd netctl
 clear
 
 echo '3.3 Настройка системы'
 genfstab -pU /mnt >> /mnt/etc/fstab
-#echo '/swapfile none swap sw 0 0' | tee -a /etc/fstab
 clear
 
 arch-chroot /mnt sh -c "$(curl -fsSL git.io/inst2)"
