@@ -13,17 +13,14 @@ clear
 #echo '/swapfile none swap sw 0 0' | tee -a /etc/fstab
 
 echo 'Установка программ'
-sudo pacman -S curl reflector gparted gpart gnome-disk-utility ffmpeg git yajl ufw f2fs-tools dosfstools mtools ntfs-3g alsa-lib alsa-utils p7zip unrar gvfs aspell-ru pulseaudio pavucontrol --noconfirm
+sudo pacman -S curl reflector gparted gpart exfat-utils gnome-disk-utility ffmpeg git yajl ufw f2fs-tools dosfstools mtools ntfs-3g alsa-lib alsa-utils p7zip unrar gvfs aspell-ru pulseaudio pavucontrol --noconfirm
 sudo pacman -R firefox --noconfirm
 
 clear
 
 echo 'Установка AUR'
-# Создаём yay_install директорию и переходим в неё
 mkdir -p /tmp/yay_install
 cd /tmp/yay_install
-
-# Установка "yay" из AUR
 git clone https://aur.archlinux.org/yay.git
 cd yay
 makepkg -sir --needed --noconfirm --skippgpcheck
@@ -31,11 +28,9 @@ cd ..
 rm -rf yay_install
 clear
 
-# Создаём pamac-aur_install директорию и переходим в неё
+echo 'Установка Pamac'
 mkdir -p /tmp/pamac-aur_install
 cd /tmp/pamac-aur_install
-
-# Установка "pamac-aur" из AUR
 git clone https://aur.archlinux.org/pamac-aur.git
 cd pamac-aur
 makepkg -si --needed --noconfirm --skippgpcheck
@@ -99,10 +94,8 @@ clear
 read -p 'Установить Google-Chrome или Chromium? [G/c] ' chrome_set
 if [[ -z $chrome_set || $chrome_set == g || $chrome_set == G ]]
   then  yay -S google-chrome --noconfirm
-#  yaourt -S chrome-gnome-shell-git --noconfirm
 elif [[ $chrome_set == c || $chrome_set == C ]]
   then sudo pacman -S chromium --noconfirm
-#  yaourt -S chrome-gnome-shell-git --noconfirm
   else echo "Как хотите. "
 fi
 clear
@@ -117,7 +110,7 @@ clear
 
 read -p 'Установить Visual Studio ? [Y/n] ' of_set
 if [[ -z $of_set || $of_set == y || $of_set == Y ]]
-  then yay visual-studio-code-bin --noconfirm
+  then yay -S visual-studio-code-bin --noconfirm
 elif [[ $of_set == n || $of_set == N ]]
   then echo 'Установка пропущена.'
 fi
@@ -175,6 +168,7 @@ if [[ -z $gdm_set || $gdm_set == Y || $gdm_set == y ]]
   cd background
   asd=`pwd`
   bash ./bgxml-gen $asd 10 3
+  yay -S chrome-gnome-shell-git --noconfirm
 elif [[ $gdm_set == n || $gdm_set == N ]]
   then echo 'Ну нет так нет.'
 fi
