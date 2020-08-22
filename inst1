@@ -69,10 +69,10 @@ elif [[ $newfs == e || $newfs == E ]]; then
    mkfs.ext4 -L $mark /dev/$rootsection
    mount /dev/$rootsection /mnt
    echo 'Создаём swap файл'
-   fallocate -l 16G /mnt/swapfile
+   fallocate -l 8G /mnt/swapfile
    chmod 600 /mnt/swapfile
    echo 'Форматируем swap'
-   dd if=/dev/zero of=/mnt/swapfile bs=1024k count=16000
+   dd if=/dev/zero of=/mnt/swapfile bs=1024k count=8000
    echo 'Подключаем swap'
    mkswap /mnt/swapfile
    swapon /mnt/swapfile
