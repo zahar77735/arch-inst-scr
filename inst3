@@ -174,7 +174,7 @@ elif [[ $gdm_set == n || $gdm_set == N ]]
 fi
 clear
 
-sudo pacman -S gst-libav gst-plugins-bad gst-plugins-base gst-plugins-good gst-plugins-ugly libde265 xine-lib
+sudo pacman -S gst-libav gst-plugins-bad gst-plugins-base gst-plugins-good gst-plugins-ugly libde265 xine-lib --noconfirm
 
 #wget https://raw.githubusercontent.com/zahar77735/arch-inst-scr/master/files/DesktopBackgroundSlide.tar.xz
 
