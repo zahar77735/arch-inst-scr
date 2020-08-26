@@ -147,7 +147,7 @@ elif [[ $vm_setting == p || $vm_setting == P ]]
   tar xzvf pantheon.tar.gz
   rm pantheon.tar.gz
   pacman -U apache-2.4.46-2-x86_64.pkg.tar.zst gconf-3.2.6+11+g07808097-6-x86_64.pkg.tar.zst otf-impallari-raleway-family-4.020-1-any.pkg.tar.zst gsettings-desktop-schemas-ubuntu-3.34.0-1-any.pkg.tar.zst pantheon-default-settings-5.1.2-2-any.pkg.tar.zst gnome-settings-daemon-elementary-3.28.1_0ubuntu1.1_r6.8357c365e-1-x86_64.pkg.tar.zst elementary-feedback-1.0-2-any.pkg.tar.zst pantheon-agent-geoclue2-1.0.4-1-any.pkg.tar.zst pantheon-onboarding-1.2.0-1-any.pkg.tar.zst sound-theme-elementary-git-r23.5519eaf-1-any.pkg.tar.zst lightdm-pantheon-greeter-5.0.4-1-x86_64.pkg.tar.zst switchboard-plug-elementary-tweaks-git-0.0.1.r50.g5e2e0e1-1-x86_64.pkg.tar.zst wingpanel-indicator-privacy-git-r129.0ee7afd-1-x86_64.pkg.tar.zst pantheon-session-5.0.3-1-any.pkg.tar.zst pantheon-stable-1.0.6-1-any.pkg.tar.zst
-  sudo pacman -S gst-libav gst-plugins-bad gst-plugins-base gst-plugins-good gst-plugins-ugly libde265 xine-lib evince 
+  sudo pacman -S evince 
   cd /
   sed -i 's/#type=local/#type=local\ngreeter-session=io.elementary.greeter/' ./etc/lightdm/lightdm.conf
   systemctl enable lightdm
