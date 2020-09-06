@@ -154,6 +154,17 @@ elif [[ $kde_set == n || $kde_set == N ]]
 fi
 clear
 
+read -p 'Вы установили LightDM? [Y/n] ' kde_set
+if [[ -z $kde_set || $kde_set == Y || $kde_set == y ]]
+  then touch /home/$USER/.face
+  ln -s /home/$USER/.face /home/$USER/.face.icon
+  setfacl -m u:lightdm:x /home/$USER/
+  setfacl -m u:lightdm:r /home/$USER/.face.icon
+elif [[ $kde_set == n || $kde_set == N ]]
+  then echo 'Ну нет так нет.'
+fi
+clear
+
 read -p 'Вы установили GNOME? [Y/n] ' gdm_set
 if [[ -z $gdm_set || $gdm_set == Y || $gdm_set == y ]]
   then touch /home/$USER/.face
