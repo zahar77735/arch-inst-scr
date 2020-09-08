@@ -143,11 +143,12 @@ elif [[ $vm_setting == k || $vm_setting == K ]]
   sleep 5
 elif [[ $vm_setting == p || $vm_setting == P ]]
   then cd /tmp
-  wget https://raw.githubusercontent.com/zahar77735/arch-inst-scr/master/files/pantheon.tar.gz
-  tar xzvf pantheon.tar.gz
+  wget https://cloclo14.datacloudmail.ru/attach/7ZFcni2a4soDD5tYoyjE3EHVqEsryfQAMjSg39cHCjyifieYxhBBpEzQ8rdCYRypsZn22s/zechara77@mail.ru/elementary-wallpapers-git-r132.0dff091-1-any.pkg.tar.zst
+  wget https://raw.githubusercontent.com/zahar77735/arch-inst-scr/master/files/gnome-pantheon.tar.gz
+  tar xzvf gnome-pantheon.tar.gz
   rm pantheon.tar.gz
-  pacman -U apache-2.4.46-2-x86_64.pkg.tar.zst gconf-3.2.6+11+g07808097-6-x86_64.pkg.tar.zst otf-impallari-raleway-family-4.020-1-any.pkg.tar.zst gsettings-desktop-schemas-ubuntu-3.34.0-1-any.pkg.tar.zst pantheon-default-settings-5.1.2-2-any.pkg.tar.zst gnome-settings-daemon-elementary-3.28.1_0ubuntu1.1_r6.8357c365e-1-x86_64.pkg.tar.zst elementary-feedback-1.0-2-any.pkg.tar.zst pantheon-agent-geoclue2-1.0.4-1-any.pkg.tar.zst pantheon-onboarding-1.2.0-1-any.pkg.tar.zst sound-theme-elementary-git-r23.5519eaf-1-any.pkg.tar.zst lightdm-pantheon-greeter-5.0.4-1-x86_64.pkg.tar.zst switchboard-plug-elementary-tweaks-git-0.0.1.r50.g5e2e0e1-1-x86_64.pkg.tar.zst wingpanel-indicator-privacy-git-r129.0ee7afd-1-x86_64.pkg.tar.zst pantheon-session-5.0.3-1-any.pkg.tar.zst pantheon-stable-1.0.6-1-any.pkg.tar.zst
-  sudo pacman -S evince 
+  pacman -U elementary-feedback-1.0-2-any.pkg.tar.zst elementary-wallpapers-git-r132.0dff091-1-any.pkg.tar.zst gconf-3.2.6+11+g07808097-8-x86_64.pkg.tar.zst gnome-settings-daemon-elementary-3.28.1_0ubuntu1.1_r6.8357c365e-1-x86_64.pkg.tar.zst gsettings-desktop-schemas-ubuntu-3.34.0-1-any.pkg.tar.zst gtk-theme-elementary-git-5.4.2r116.744e029-1-any.pkg.tar.zst otf-raleway-4.101-1-any.pkg.tar.zst pantheon-agent-geoclue2-1.0.4-1-any.pkg.tar.zst pantheon-default-settings-git-5.1.2.r26.g9a45d0a-1-any.pkg.tar.zst pantheon-onboarding-1.2.0-1-any.pkg.tar.zst pantheon-session-5.0.3-1-any.pkg.tar.zst pantheon-stable-1.0.6-1-any.pkg.tar.zst sound-theme-elementary-git-r23.5519eaf-1-any.pkg.tar.zst switchboard-plug-elementary-tweaks-git-0.0.1.r50.g5e2e0e1-1-x86_64.pkg.tar.zst ttf-raleway-4.101-1-any.pkg.tar.zst ttf-raleway-variable-4.101-1-any.pkg.tar.zst wingpanel-indicator-privacy-git-r130.2b2ca49-1-x86_64.pkg.tar.zst
+  pacman -S lightdm-pantheon-greeter
   cd /
   sed -i 's/#type=local/#type=local\ngreeter-session=io.elementary.greeter/' ./etc/lightdm/lightdm.conf
   systemctl enable lightdm
