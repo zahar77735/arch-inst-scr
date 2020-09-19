@@ -14,8 +14,6 @@ echo "ru_RU.UTF-8 UTF-8" >> /etc/locale.gen
 echo 'Обновим текущую локаль системы'
 locale-gen
 
-clear
-
 echo 'Указываем язык системы'
 echo 'LANG="ru_RU.UTF-8"' >> /etc/locale.conf
 echo 'LC_MESSAGES="ru_RU.UTF-8"' >> /etc/locale.conf
@@ -26,8 +24,6 @@ echo 'FONT=cyr-sun16' >> /etc/vconsole.conf
 echo 'tmpfs /tmp tmpfs noatime,nodiratime,mode=1777,size=50% 0 0' >> /etc/fstab
 touch /etc/sysctl.d/99-sysctl.conf
 echo 'vm.swappiness=10' >> /etc/sysctl.d/99-sysctl.conf
-
-clear
 
 read -p "Ваша файловая система BTRFS? [Y/n]" btr
 if [[ -z $btr || $btr == y || $btr == Y ]]; then
@@ -42,24 +38,16 @@ pkgfile --update
 
 nano /etc/mkinitcpio.conf
 
-clear
-
 echo 'Создадим загрузочный RAM диск'
 mkinitcpio -p linux-zen
-
-clear
 
 echo '3.5 Устанавливаем загрузчик'
 pacman -S grub os-prober --noconfirm
 read -p "Куда ставим загрузчик: " devsection
 grub-install /dev/$devsection
 
-clear
-
 echo 'Обновляем grub.cfg'
 grub-mkconfig -o /boot/grub/grub.cfg
-
-clear
 
 read -p "Установить тему Tela для GRUB? [Y/n]" themes_grub
 if [[ -z $themes_grub || $themes_grub == y || $themes_grub == Y ]]
@@ -76,27 +64,17 @@ elif [[ $themes_grub == n || $themes_grub == N ]]; then
   echo 'Установка пропущена.'
 fi
 
-clear
-
 echo 'Ставим программу для Wi-fi'
 pacman -S dialog wpa_supplicant --noconfirm 
-
-clear
 
 echo 'Добавляем пользователя'
 useradd -m -g users -G wheel,audio,video,storage -s /bin/bash $username
 
-clear
-
 echo 'Создаем root пароль'
 passwd
 
-clear
-
 echo 'Устанавливаем пароль пользователя'
 passwd $username
-
-clear
 
 echo 'Устанавливаем SUDO'
 echo '%wheel ALL=(ALL) ALL' >> /etc/sudoers
@@ -108,8 +86,6 @@ pacman-key --init
 pacman-key --populate archlinux
 pacman -Syy
 
-clear
-
 read -p "Вы устанавливаете Arch Linux на виртуальную машину? [N/y]" vm_set
 if [[ -z $vm_set || $vm_set == n || $vm_set == N ]]
   then gui_install="xorg-server xorg-drivers xorg-xinit --noconfirm"
@@ -118,8 +94,6 @@ elif [[ $vm_set == y || $vm_set == Y ]]
 fi
 
 pacman -S $gui_install
-
-clear
 
 read -p "Что ставим XFCE, KDE, MATE, Pantheon или GNOME ? Указать [G/X/K/P/M] Пропустить-Enter " vm_setting
 if [[ -z $vm_setting ]]
@@ -164,30 +138,20 @@ elif [[ $vm_setting == m || $vm_setting == M ]]
   sleep 5
 fi
 
-clear
-
 echo "изменяем активный планировщик ввода-вывода"
 wget https://raw.githubusercontent.com/zahar77735/arch-inst-scr/master/files/60-ioschedulers.rules
 mv 60-ioschedulers.rules /etc/udev/rules.d/60-ioschedulers.rules
 chmod 644 /etc/udev/rules.d/60-ioschedulers.rules
 sleep 5
 
-clear
-
 echo 'Ставим шрифты'
 pacman -S ttf-liberation ttf-dejavu ttf-ubuntu-font-family --noconfirm 
-
-clear
 
 echo 'Ставим сеть'
 pacman -S networkmanager network-manager-applet ppp --noconfirm
 
-clear
-
 echo 'Подключаем автозагрузку менеджера входа и интернет'
 systemctl enable NetworkManager
-
-clear
 
 read -p 'Ваша видеокарта nVidia? Установить проприетарный драйвер? [Y/n] ' nvidia_set
 if [[ -z $nvidia_set || $nvidia_set == y || $nvidia_set == Y ]]
@@ -206,8 +170,6 @@ if [[ -z $nvidia_set || $nvidia_set == y || $nvidia_set == Y ]]
 elif [[ $nvidia_set == n || $nvidia_set == N ]]; then
   echo 'Установка пропущена.'
 fi
-
-clear
 
 echo 'Установка завершена! Перезагрузите систему.'
 
