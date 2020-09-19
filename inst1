@@ -15,7 +15,6 @@ lsblk
 
 read -p "Выбор диска: " devsection
 cfdisk /dev/$devsection
-clear
 
 read -p "Выбор файловой системы. либо EXT4 -e, либо BTRFS -b [B/e] " newfs
 if [[ -z $newfs || $newfs == b || $newfs == B ]]; then
@@ -78,21 +77,17 @@ elif [[ $newfs == e || $newfs == E ]]; then
    swapon /mnt/swapfile
   fi
 fi
-clear
 
 echo '3.1 Выбор зеркал для загрузки. Ставим зеркало от Яндекс'
 echo "Server = http://mirror.yandex.ru/archlinux/\$repo/os/\$arch" > /etc/pacman.d/mirrorlist
 echo "Server = https://mirror.yandex.ru/archlinux/\$repo/os/\$arch" > /etc/pacman.d/mirrorlist
 echo "Server = http://mirror.rol.ru/archlinux/\$repo/os/\$arch" > /etc/pacman.d/mirrorlist
 echo "Server = https://mirror.rol.ru/archlinux/\$repo/os/\$arch" > /etc/pacman.d/mirrorlist
-clear
 
 echo '3.2 Установка основных пакетов'
 pacstrap /mnt base base-devel linux-zen linux-firmware linux-zen-headers crda amd-ucode nano dhcpcd netctl
-clear
 
 echo '3.3 Настройка системы'
 genfstab -pU /mnt >> /mnt/etc/fstab
-clear
 
 arch-chroot /mnt sh -c "$(curl -fsSL git.io/inst2)"
