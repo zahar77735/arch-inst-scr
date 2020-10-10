@@ -12,7 +12,7 @@ sleep 5
 #echo '/swapfile none swap sw 0 0' | tee -a /etc/fstab
 
 echo 'Установка программ'
-sudo pacman -S curl reflector gparted gpart exfat-utils gnome-disk-utility ffmpeg git yajl ufw f2fs-tools dosfstools mtools ntfs-3g alsa-lib alsa-utils p7zip unrar gvfs aspell-ru pulseaudio pavucontrol --noconfirm
+sudo pacman -S curl reflector gparted youtube-dl gpart exfat-utils gnome-disk-utility ffmpeg git yajl ufw f2fs-tools dosfstools mtools ntfs-3g alsa-lib alsa-utils p7zip unrar gvfs aspell-ru pulseaudio pavucontrol --noconfirm
 sudo pacman -R firefox --noconfirm
 
 echo 'Установка AUR'
