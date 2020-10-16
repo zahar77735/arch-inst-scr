@@ -100,7 +100,7 @@ if [[ -z $vm_setting ]]
   then echo "Пропускаем установку GUI"
   sleep 5
 elif [[ $vm_setting == x || $vm_setting == X ]]
-  then pacman -S xfce4 xfce4-goodies file-roller gthumb plank gnome-calculator evince alsa-plugins pulseaudio-alsa --noconfirm && read -p "Какой DM ставим LightDM, LXDM ? Указать [1,2] " dm_set
+  then pacman -S xfce4 xfce4-goodies file-roller gthumb plank gnome-calculator evince alsa-plugins pulseaudio-alsa libmtp mtpfs gvfs-mtp gvfs-gphoto2 --noconfirm && read -p "Какой DM ставим LightDM, LXDM ? Указать [1,2] " dm_set
   if [[ $dm_set == 1 ]]
     then pacman -S lightdm-gtk-greeter --noconfirm
     systemctl enable lightdm
