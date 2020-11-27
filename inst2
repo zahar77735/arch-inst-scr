@@ -21,9 +21,15 @@ echo 'LC_MESSAGES="ru_RU.UTF-8"' >> /etc/locale.conf
 echo 'Вписываем KEYMAP=ru FONT=cyr-sun16'
 echo 'KEYMAP=ru' >> /etc/vconsole.conf
 echo 'FONT=cyr-sun16' >> /etc/vconsole.conf
-echo 'tmpfs /tmp tmpfs noatime,nodiratime,mode=1777,size=50% 0 0' >> /etc/fstab
-touch /etc/sysctl.d/99-sysctl.conf
-echo 'vm.swappiness=10' >> /etc/sysctl.d/99-sysctl.conf
+
+read -p "Ваш диск SSD? [Y/n]" btr
+if [[ -z $btr || $btr == y || $btr == Y ]]; then
+  echo 'У Вас SSD'
+elif [[ $btr == n || $btr == N ]]; then
+  echo 'tmpfs /tmp tmpfs noatime,nodiratime,mode=1777,size=50% 0 0' >> /etc/fstab
+  touch /etc/sysctl.d/99-sysctl.conf
+  echo 'vm.swappiness=10' >> /etc/sysctl.d/99-sysctl.conf
+fi
 
 read -p "Ваша файловая система BTRFS? [Y/n]" btr
 if [[ -z $btr || $btr == y || $btr == Y ]]; then
