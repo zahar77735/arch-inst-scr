@@ -79,8 +79,7 @@ elif [[ $newfs == e || $newfs == E ]]; then
 fi
 
 echo '3.1 Выбор зеркал для загрузки. Ставим зеркало от Яндекс'
-pacman -S reflector
-reflector --verbose  -l 5 -p https --sort rate --save /etc/pacman.d/mirrorlist
+pacman -S reflector && reflector --verbose  -l 5 -p https --sort rate --save /etc/pacman.d/mirrorlist && pacman -Sy
 
 echo '3.2 Установка основных пакетов'
 pacstrap /mnt base base-devel linux-zen linux-firmware linux-zen-headers crda amd-ucode nano dhcpcd netctl
