@@ -13,70 +13,62 @@ echo '2.4 создание разделов'
 echo 'Ваша разметка диска'
 lsblk
 
-read -p "Выбор диска: " devsection
-cfdisk /dev/$devsection
-
-read -p "Выбор файловой системы. либо EXT4 -e, либо BTRFS -b [B/e] " newfs
-if [[ -z $newfs || $newfs == b || $newfs == B ]]; then
- read -p "На диске имеется swap раздел? [Y/n] " new_system
-  if [[ -z $new_system || $new_system == y || $new_system == Y ]]
-   then read -p "Выбор системного раздела: " rootsection
-   echo '2.4.2 Форматирование диска'
-   read -p "Введите имя метки тома :" mark
-   mkfs.btrfs -f -L $mark /dev/$rootsection
-   echo '2.4.3 Монтирование диска'
-   mount /dev/$rootsection /mnt
-   echo '2.4.4 Создание подтомов'
-   btrfs subvolume create /mnt/@
-   btrfs subvolume create /mnt/@home
-   btrfs subvolume list /mnt
-   umount /mnt
-   mount -o subvol=@,compress=lzo,relatime,space_cache,autodefrag /dev/$rootsection /mnt
-   mkdir /mnt/home
-   mount -o subvol=@home,compress=lzo,relatime,space_cache,autodefrag /dev/$rootsection /mnt/home
- elif [[ $new_system == n || $new_system == N ]]
-   then read -p "Выбор swap раздела: " swapsection
-   mkswap /dev/$swapsection -L swap
-   swapon /dev/$swapsection
-   read -p "Выбор системного раздела: " rootsection
-   echo '2.4.2 Форматирование диска'
-   read -p "Введите имя метки тома :" mark
-   mkfs.btrfs -f -L $mark /dev/$rootsection
-   echo '2.4.3 Монтирование диска'
-   mount /dev/$rootsection /mnt
-   echo '2.4.4 Создание подтомов'
-   btrfs subvolume create /mnt/@
-   btrfs subvolume create /mnt/@home
-   btrfs subvolume list /mnt
-   umount /mnt
-   mount -o subvol=@,compress=lzo,relatime,space_cache,autodefrag /dev/$rootsection /mnt
-   mkdir /mnt/home
-   mount -o subvol=@home,compress=lzo,relatime,space_cache,autodefrag /dev/$rootsection /mnt/home
-  fi
-elif [[ $newfs == e || $newfs == E ]]; then
- read -p "На диске имеется swap раздел? [Y/n] " new_system
-  if [[ -z $new_system || $new_system == y || $new_system == Y ]]; then
-   read -p "Выбор системного раздела: " rootsection
-   echo '2.4.2 Форматирование диска'
-   read -p "Введите имя метки тома :" mark
-   mkfs.ext4 -L $mark /dev/$rootsection
-   mount /dev/$rootsection /mnt
-  elif [[ $new_system == n || $new_system == N ]]; then
-   read -p "Выбор системного раздела: " rootsection
-   echo '2.4.2 Форматирование диска'
-   read -p "Введите имя метки тома :" mark
-   mkfs.ext4 -L $mark /dev/$rootsection
-   mount /dev/$rootsection /mnt
-   echo 'Создаём swap файл'
-   fallocate -l 8G /mnt/swapfile
-   chmod 600 /mnt/swapfile
-   echo 'Форматируем swap'
-   dd if=/dev/zero of=/mnt/swapfile bs=1024k count=8000
-   echo 'Подключаем swap'
-   mkswap /mnt/swapfile
-   swapon /mnt/swapfile
-  fi
-fi
+var1=1
+while [ $var1 -gt 0 ]
+do
+	read -p "Выберите диск, куда будет установлена система (Пример: sda): " devsection
+	DI=$(cat /sys/block/$devsection/queue/rotational)
+	#echo $DI
+	if [[ $DI == 1 ]]; then
+		read -p 'Выбраный диск является HDD, разметить диск или выбрать другой [Y/n]? ' xhdd
+		if [[ -z $xhdd || $xhdd == y || $xhdd == Y ]]; then
+		cfdisk /dev/$devsection
+		read -p "swap будем создавать? [Y/n] " xswap
+		if [[ -z $xswap || $xswap == y || $xswap == Y ]]
+			then read -p "Выбор раздела для swap: " swapsection
+			mkswap /dev/$swapsection -L swap
+			swapon /dev/$swapsection
+		fi
+		read -p "Выберите раздел куда будет установлена система: " rootsection
+		read -p "Введите имя метки тома :" mark
+		mkfs.btrfs -f -L $mark /dev/$rootsection
+		mount /dev/$rootsection /mnt
+		btrfs subvolume create /mnt/sv_root
+		btrfs subvolume create /mnt/sv_home
+		btrfs subvolume create /mnt/sv_snapshots
+		umount /mnt
+		mount -o subvol=sv_root,compress=zstd,noatime,nodatacow,max_inline=256,space_cache,autodefrag /dev/$rootsection /mnt
+		mkdir /mnt/home
+		mkdir /mnt/snapshots
+		mount -o subvol=sv_home,compress=zstd,noatime,nodatacow,max_inline=256,space_cache,autodefrag /dev/$rootsection /mnt/home
+		mount -o subvol=sv_snapshots,compress=zstd,noatime,nodatacow,max_inline=256,space_cache,autodefrag /dev/$rootsection /mnt/snapshots
+		var1=0
+		elif [[ $xhdd == n || $xhdd == N ]]; then
+		var1=1
+		fi
+	else 
+		read -p 'Выбраный диск является SSD, разметить диск или выбрать другой [Y/n]? ' xhdd
+		if [[ -z $xhdd || $xhdd == y || $xhdd == Y ]]; then
+		cfdisk /dev/$devsection
+		read -p "Выберите раздел куда будет установлена система: " rootsection
+		read -p "Введите имя метки тома :" mark
+		mkfs.btrfs -f -L $mark /dev/$rootsection
+		mount /dev/$rootsection /mnt
+		btrfs subvolume create /mnt/sv_root
+		btrfs subvolume create /mnt/sv_home
+		btrfs subvolume create /mnt/sv_snapshots
+		umount /mnt
+		mount -o subvol=sv_root,compress=zstd,noatime,nodatacow,max_inline=256,ssd,space_cache,discard,autodefrag /dev/$rootsection /mnt
+		mkdir /mnt/home
+		mkdir /mnt/snapshots
+		mount -o subvol=sv_home,compress=zstd,noatime,nodatacow,max_inline=256,ssd,space_cache,discard,autodefrag /dev/$rootsection /mnt/home
+		mount -o subvol=sv_snapshots,compress=zstd,noatime,nodatacow,max_inline=256,ssd,space_cache,discard,autodefrag /dev/$rootsection /mnt/snapshots
+		var1=0
+		elif [[ $xhdd == n || $xhdd == N ]]; then
+		var1=1
+		fi
+	fi
+done
 
 echo '3.1 Выбор зеркал для загрузки. Ставим зеркало от Яндекс'
 pacman -S reflector && reflector --verbose  -l 5 -p https --sort rate --save /etc/pacman.d/mirrorlist && pacman -Sy
