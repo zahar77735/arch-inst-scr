@@ -5,10 +5,10 @@ setfont cyr-sun16
 #echo 'Скрипт сделан на основе чеклиста Бойко Алексея по Установке ArchLinux'
 #echo 'Ссылка на чек лист есть в группе vk.com/arch4u'
 
-echo '2.3 Синхронизация системных часов'
+echo 'Синхронизация системных часов'
 timedatectl set-ntp true
 
-echo '2.4 создание разделов'
+echo 'Создание разделов'
 
 echo 'Ваша разметка диска'
 lsblk
@@ -70,13 +70,12 @@ do
 	fi
 done
 
-echo '3.1 Выбор зеркал для загрузки. Ставим зеркало от Яндекс'
+echo 'Выбор зеркал для загрузки.'
 pacman -S reflector && reflector --verbose  -l 5 -p https --sort rate --save /etc/pacman.d/mirrorlist && pacman -Sy
 
-echo '3.2 Установка основных пакетов'
-pacstrap /mnt base base-devel linux-zen linux-firmware linux-zen-headers crda amd-ucode nano dhcpcd netctl
+echo 'Установка основных пакетов'
+pacstrap /mnt base base-devel linux-zen linux-firmware linux-zen-headers crda amd-ucode nano dhcpcd netctl btrfs-progs
 
-echo '3.3 Настройка системы'
 genfstab -pU /mnt >> /mnt/etc/fstab
 
 arch-chroot /mnt sh -c "$(curl -fsSL git.io/inst2)"
