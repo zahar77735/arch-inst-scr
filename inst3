@@ -115,7 +115,8 @@ if [[ $wm == XFCE || $wm == MATE ]]; then
   setfacl -m u:lightdm:r /home/$USER/.face.icon
   sudo pacman -S qt5ct --noconfirm
   yay -S qt5-styleplugins --noconfirm
-  sudo echo 'export QT_QPA_PLATFORMTHEME="qt5ct"' >> /etc/profile
+  sudo -s
+  echo 'export QT_QPA_PLATFORMTHEME="qt5ct"' >> /etc/profile
 elif [[ $wm == KDE ]]; then
   touch /home/$USER/.face
   ln -s /home/$USER/.face /home/$USER/.face.icon
