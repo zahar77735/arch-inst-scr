@@ -83,6 +83,7 @@ if [[ -z $of_set || $of_set == y || $of_set == Y ]]
   curl -L http://install.ohmyz.sh | sh
   echo 'export MAKEFLAGS="-j$(nproc)"' >> /home/$USER/.zshrc
   echo 'export EDITOR=nano' >> /home/$USER/.zshrc
+  mkdir $HOME/.local/bin
   echo 'export PATH=$PATH:'$HOME'/.local/bin' >> /home/$USER/.zshrc
   echo "alias up='sudo reflector --verbose -l 5 -p https --sort rate --save /etc/pacman.d/mirrorlist && sudo pacman -Syyu && yay -Syu --noconfirm && sudo pacman -Rsn $(pacman -Qdtq)'" >> /home/$USER/.zshrc
   source /home/$USER/.zshrc
