@@ -12,7 +12,7 @@ sleep 5
 #echo '/swapfile none swap sw 0 0' | tee -a /etc/fstab
 
 echo 'Установка программ'
-sudo pacman -S curl reflector gparted youtube-dl gpart exfat-utils gnome-disk-utility ffmpeg git yajl ufw f2fs-tools dosfstools mtools ntfs-3g alsa-lib alsa-utils p7zip unrar gvfs aspell-ru pulseaudio pavucontrol --noconfirm
+sudo pacman -S curl  cronie reflector gparted youtube-dl gpart exfat-utils gnome-disk-utility ffmpeg git yajl ufw f2fs-tools dosfstools mtools ntfs-3g alsa-lib alsa-utils p7zip unrar gvfs aspell-ru pulseaudio pavucontrol --noconfirm
 sudo pacman -R firefox --noconfirm
 
 echo 'Установка AUR'
@@ -94,7 +94,7 @@ if [[ -z $of_set || $of_set == y || $of_set == Y ]]
   curl -L http://install.ohmyz.sh | sh
   echo 'export MAKEFLAGS="-j$(nproc)"' >> /home/$USER/.zshrc
   echo 'export EDITOR=nano' >> /home/$USER/.zshrc
-  echo 'export PATH=$PATH:$HOME/.local/bin' >> /home/$USER/.zshrc
+  echo 'export PATH=$PATH:'$HOME'/.local/bin' >> /home/$USER/.zshrc
   echo 'alias up="sudo reflector --verbose -l 5 -p https --sort rate --save /etc/pacman.d/mirrorlist && sudo pacman -Syyu && yay -Syu --noconfirm && sudo pacman -Rsn $(pacman -Qdtq)"' >> /home/$USER/.zshrc
   source /home/$USER/.zshrc
 elif [[ $of_set == n || $of_set == N ]]
@@ -157,7 +157,7 @@ elif [[ $gdm_set == n || $gdm_set == N ]]
   then echo 'Ну нет так нет.'
 fi
 
-sudo pacman -S gst-libav gst-plugins-bad gst-plugins-base gst-plugins-good gst-plugins-ugly libde265 xine-lib cronie --noconfirm
+sudo pacman -S gst-libav gst-plugins-bad gst-plugins-base gst-plugins-good gst-plugins-ugly libde265 xine-lib --noconfirm
 
 
 sudo grub-mkconfig -o /boot/grub/grub.cfg
