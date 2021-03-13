@@ -107,15 +107,14 @@ sudo ufw enable
 echo 'Добавляем в автозагрузку:'
 sudo systemctl enable ufw
 
-read -p 'У вас проприетарный драйвер nVidia? [Y/n] ' nv_set
-if [[ -z $nv_set || $nv_set == y || $nv_set == Y ]]
-  then wget https://raw.githubusercontent.com/zahar77735/arch-inst-scr/master/files/NVIDIACONFIG.desktop
+nvset=$(cat /etc/mkinitcpio.conf | grep nvidia | wc -l)
+if [[ $nvset != 0 ]]; then
+	echo 'у вас пропреетарный драйвер nvidia'
+  wget https://raw.githubusercontent.com/zahar77735/arch-inst-scr/master/files/NVIDIACONFIG.desktop
   chmod 644 NVIDIACONFIG.desktop
   mkdir /home/$USER/.config/autostart/
   mv NVIDIACONFIG.desktop ~/.config/autostart/nvidia-config.desktop
   sudo nvidia-xconfig --cool-bits=12
-elif [[ $nv_set == N || $nv_set == n ]]
-  then echo 'Ну нет так нет.'
 fi
 
 read -p 'Вы установили KDE? [Y/n] ' kde_set
