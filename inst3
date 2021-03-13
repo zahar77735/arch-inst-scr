@@ -9,8 +9,6 @@ echo 'export MAKEFLAGS="-j$(nproc)"' >> /home/$USER/.bashrc
 source /home/$USER/.bashrc
 sleep 5
 
-#echo '/swapfile none swap sw 0 0' | tee -a /etc/fstab
-
 echo 'Установка программ'
 sudo pacman -S curl  cronie reflector gparted youtube-dl gpart exfat-utils gnome-disk-utility ffmpeg git yajl ufw f2fs-tools dosfstools mtools ntfs-3g alsa-lib alsa-utils p7zip unrar gvfs aspell-ru pulseaudio pavucontrol --noconfirm
 sudo pacman -R firefox --noconfirm
@@ -34,20 +32,12 @@ makepkg -si --needed --noconfirm --skippgpcheck
 cd ..
 rm -rf pamac-aur_install
 
-
-read -p 'Установить TimeShift? [Y/n] ' timeshift_set
-if [[ -z $timeshift_set || $timeshift_set == y || $timeshift_set == Y ]]
-  then yay timeshift --noconfirm
-  sudo pacman -Sy cron --noconfirm
-elif [[ $timeshift_set == n || $timeshift_set == N ]]
-  then echo 'Установка timeshift пропущена.'
-fi
-
-read -p 'Установить Steam? [Y/n] ' steam_set
-if [[ -z $steam_set || $steam_set == y || $steam_set == Y ]]
-  then sudo pacman -S steam --noconfirm
-elif [[ $steam_set == n || $steam_set == N ]]
-  then echo 'Установка timeshift пропущена.'
+read -p 'Установить рекомендумые программы? [Y/n] ' prog_set
+if [[ -z $prog_set || $prog_set == y || $prog_set == Y ]]
+  then sudo pacman -S vlc audacious gimp inkscape hwinfo libzip pstoedit mariadb-libs unixodbc --noconfirm
+  yay -S imagewriter --noconfirm
+elif [[ $prog_set == n || $prog_set == N ]]
+  then echo 'Установка программ пропущена.'
 fi
 
 read -p 'Установить Stacer? [Y/n] ' shift_set
@@ -55,14 +45,6 @@ if [[ -z $shift_set || $shift_set == y || $shift_set == Y ]]
   then yay -S stacer --noconfirm
 elif [[ $shift_set == n || $shift_set == N ]]
   then echo 'Установка timeshift пропущена.'
-fi
-
-read -p 'Установить рекомендумые программы? [Y/n] ' prog_set
-if [[ -z $prog_set || $prog_set == y || $prog_set == Y ]]
-  then sudo pacman -S vlc audacious gimp inkscape hwinfo libzip pstoedit mariadb-libs unixodbc --noconfirm
-  yay -S imagewriter --noconfirm
-elif [[ $prog_set == n || $prog_set == N ]]
-  then echo 'Установка программ пропущена.'
 fi
 
 read -p 'Установить Google-Chrome или Chromium? [G/c] ' chrome_set
@@ -78,6 +60,13 @@ if [[ -z $of_set || $of_set == y || $of_set == Y ]]
   then sudo pacman -S libreoffice libreoffice-fresh-ru --noconfirm
 elif [[ $of_set == n || $of_set == N ]]
   then echo 'Установка пропущена.'
+fi
+
+read -p 'Установить Steam? [Y/n] ' steam_set
+if [[ -z $steam_set || $steam_set == y || $steam_set == Y ]]
+  then sudo pacman -S steam --noconfirm
+elif [[ $steam_set == n || $steam_set == N ]]
+  then echo 'Установка timeshift пропущена.'
 fi
 
 read -p 'Установить Visual Studio ? [Y/n] ' of_set
@@ -109,7 +98,7 @@ sudo systemctl enable ufw
 
 nvset=$(cat /etc/mkinitcpio.conf | grep nvidia | wc -l)
 if [[ $nvset != 0 ]]; then
-	echo 'у вас пропреетарный драйвер nvidia'
+  echo 'у вас пропреетарный драйвер nvidia'
   wget https://raw.githubusercontent.com/zahar77735/arch-inst-scr/master/files/NVIDIACONFIG.desktop
   chmod 644 NVIDIACONFIG.desktop
   mkdir /home/$USER/.config/autostart/
@@ -117,29 +106,22 @@ if [[ $nvset != 0 ]]; then
   sudo nvidia-xconfig --cool-bits=12
 fi
 
-read -p 'Вы установили KDE? [Y/n] ' kde_set
-if [[ -z $kde_set || $kde_set == Y || $kde_set == y ]]
-  then touch /home/$USER/.face
-  ln -s /home/$USER/.face /home/$USER/.face.icon
-  setfacl -m u:sddm:x /home/$USER/
-  setfacl -m u:sddm:r /home/$USER/.face.icon
-elif [[ $kde_set == n || $kde_set == N ]]
-  then echo 'Ну нет так нет.'
-fi
-
-read -p 'Вы установили LightDM? [Y/n] ' kde_set
-if [[ -z $kde_set || $kde_set == Y || $kde_set == y ]]
-  then touch /home/$USER/.face
+wm=$XDG_CURRENT_DESKTOP
+if [[ $wm == XFCE || $wm == MATE ]]; then
+  touch /home/$USER/.face
   ln -s /home/$USER/.face /home/$USER/.face.icon
   setfacl -m u:lightdm:x /home/$USER/
   setfacl -m u:lightdm:r /home/$USER/.face.icon
-elif [[ $kde_set == n || $kde_set == N ]]
-  then echo 'Ну нет так нет.'
-fi
-
-read -p 'Вы установили GNOME? [Y/n] ' gdm_set
-if [[ -z $gdm_set || $gdm_set == Y || $gdm_set == y ]]
-  then touch /home/$USER/.face
+  sudo pacman -S qt5ct --noconfirm
+  yay -S qt5-styleplugins --noconfirm
+  sudo echo 'export QT_QPA_PLATFORMTHEME="qt5ct"' >> /etc/profile
+elif [[ $wm == KDE ]]; then
+  touch /home/$USER/.face
+  ln -s /home/$USER/.face /home/$USER/.face.icon
+  setfacl -m u:sddm:x /home/$USER/
+  setfacl -m u:sddm:r /home/$USER/.face.icon
+elif [[ $wm == GNOME ]]; then
+  touch /home/$USER/.face
   ln -s /home/$USER/.face /home/$USER/.face.icon
   setfacl -m u:gdm:x /home/$USER/
   setfacl -m u:gdm:r /home/$USER/.face.icon
@@ -152,12 +134,9 @@ if [[ -z $gdm_set || $gdm_set == Y || $gdm_set == y ]]
   asd=`pwd`
   bash ./bgxml-gen $asd 10 3
   yay -S chrome-gnome-shell-git --noconfirm
-elif [[ $gdm_set == n || $gdm_set == N ]]
-  then echo 'Ну нет так нет.'
 fi
 
 sudo pacman -S gst-libav gst-plugins-bad gst-plugins-base gst-plugins-good gst-plugins-ugly libde265 xine-lib --noconfirm
-
 
 sudo grub-mkconfig -o /boot/grub/grub.cfg
 clear
