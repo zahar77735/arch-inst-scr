@@ -104,35 +104,20 @@ fi
 
 pacman -S $gui_install
 
-read -p "Что ставим XFCE, KDE, MATE, Pantheon или GNOME ? Указать [G/X/K/P/M] Пропустить-Enter " vm_setting
+read -p "Что ставим XFCE, KDE, MATE или GNOME ? Указать [G/X/K/M] Пропустить-Enter " vm_setting
 if [[ -z $vm_setting ]]
   then echo "Пропускаем установку GUI"
   sleep 5
 elif [[ $vm_setting == x || $vm_setting == X ]]
-  then pacman -S xfce4 xfce4-goodies file-roller gthumb plank gnome-calculator evince alsa-plugins pulseaudio-alsa libmtp mtpfs gvfs-mtp gvfs-gphoto2 --noconfirm && read -p "Какой DM ставим LightDM, LXDM ? Указать [1,2] " dm_set
-  if [[ $dm_set == 1 ]]
-    then pacman -S lightdm-gtk-greeter --noconfirm
-    systemctl enable lightdm
-    sleep 5
-  elif [[ $dm_set == 2 ]]
-    then pacman -S lxdm --noconfirm
-    systemctl enable lxdm.service
-    sleep 5
-  fi
+  then pacman -S xfce4 xfce4-goodies file-roller gthumb plank gnome-calculator gedit dconf-editor pantheon-agent-polkit evince alsa-plugins pulseaudio-alsa libmtp mtpfs gvfs-mtp gvfs-gphoto2 --noconfirm
+  pacman -Rscu mousepad --noconfirm
+  pacman -S lightdm-gtk-greeter --noconfirm
+  systemctl enable lightdm
+  sleep 5
 elif [[ $vm_setting == k || $vm_setting == K ]]
   then pacman -Sy plasma konsole kate dolphin sddm packagekit-qt5 qt5-xmlpatterns spectacle okular ark gwenview --noconfirm
   sleep 5
   systemctl enable sddm
-  sleep 5
-elif [[ $vm_setting == p || $vm_setting == P ]]
-  then cd /tmp
-  tar xzvf gnome-pantheon.tar.gz
-  rm gnome-pantheon.tar.gz
-  pacman -U elementary-feedback-1.0-2-any.pkg.tar.zst gconf-3.2.6+11+g07808097-8-x86_64.pkg.tar.zst gnome-settings-daemon-elementary-3.28.1_0ubuntu1.1_r6.8357c365e-1-x86_64.pkg.tar.zst gsettings-desktop-schemas-ubuntu-3.34.0-1-any.pkg.tar.zst gtk-theme-elementary-git-5.4.2r116.744e029-1-any.pkg.tar.zst otf-raleway-4.101-1-any.pkg.tar.zst pantheon-agent-geoclue2-1.0.4-1-any.pkg.tar.zst pantheon-default-settings-git-5.1.2.r26.g9a45d0a-1-any.pkg.tar.zst pantheon-onboarding-1.2.0-1-any.pkg.tar.zst pantheon-session-5.0.3-1-any.pkg.tar.zst pantheon-stable-1.0.6-1-any.pkg.tar.zst sound-theme-elementary-git-r23.5519eaf-1-any.pkg.tar.zst switchboard-plug-elementary-tweaks-git-0.0.1.r50.g5e2e0e1-1-x86_64.pkg.tar.zst ttf-raleway-4.101-1-any.pkg.tar.zst ttf-raleway-variable-4.101-1-any.pkg.tar.zst wingpanel-indicator-privacy-git-r130.2b2ca49-1-x86_64.pkg.tar.zst
-  pacman -S lightdm-pantheon-greeter
-  cd /
-  sed -i 's/#type=local/#type=local\ngreeter-session=io.elementary.greeter/' ./etc/lightdm/lightdm.conf
-  systemctl enable lightdm
   sleep 5
 elif [[ $vm_setting == g || $vm_setting == G ]] 
   then pacman -S gnome gnome-shell gdm gnome-tweaks gthumb --noconfirm
