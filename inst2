@@ -95,14 +95,12 @@ pacman-key --init
 pacman-key --populate archlinux
 pacman -Syy
 
-read -p "Вы устанавливаете Arch Linux на виртуальную машину? [N/y]" vm_set
-if [[ -z $vm_set || $vm_set == n || $vm_set == N ]]
-  then gui_install="xorg-server xorg-drivers xorg-xinit --noconfirm"
-elif [[ $vm_set == y || $vm_set == Y ]]
-  then gui_install="xorg-server xorg-drivers xorg-xinit virtualbox-guest-utils --noconfirm"
+read -p "Установить иксы? [Y/n]" vm_set
+if [[ -z $vm_set || $vm_set == y || $vm_set == Y ]]
+  then pacman -S xorg-server xorg-drivers xorg-xinit --noconfirm
+elif [[ $vm_set == n || $vm_set == N ]]
+  then echo 'Пропущена установка'
 fi
-
-pacman -S $gui_install
 
 read -p "Что ставим XFCE, KDE, MATE или GNOME ? Указать [G/X/K/M] Пропустить-Enter " vm_setting
 if [[ -z $vm_setting ]]
