@@ -92,10 +92,6 @@ elif [[ $of_set == n || $of_set == N ]]
   then echo 'Установка пропущена.'
 fi
 
-echo 'alias up="sudo reflector --verbose -l 5 -p https --sort rate --save /etc/pacman.d/mirrorlist && sudo pacman -Syyu && yay -Syu --noconfirm && sudo pacman -Rsn $(sudo pacman -Qdtq)"' >> /home/$USER/.zshrc
-echo " "
-sleep 5
-
 echo 'Включаем сетевой экран'
 sudo ufw enable
 
@@ -118,10 +114,6 @@ if [[ $wm == XFCE || $wm == MATE ]]; then
   ln -s /home/$USER/.face /home/$USER/.face.icon
   setfacl -m u:lightdm:x /home/$USER/
   setfacl -m u:lightdm:r /home/$USER/.face.icon
-  sudo pacman -S qt5ct --noconfirm
-  yay -S qt5-styleplugins --noconfirm
-  sudo -s
-  echo 'export QT_QPA_PLATFORMTHEME="qt5ct"' >> /etc/profile
 elif [[ $wm == KDE ]]; then
   touch /home/$USER/.face
   ln -s /home/$USER/.face /home/$USER/.face.icon
