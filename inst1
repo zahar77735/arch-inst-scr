@@ -71,7 +71,7 @@ do
 done
 
 echo 'Выбор зеркал для загрузки.'
-pacman -S reflector && reflector --verbose  -l 5 -p https --sort rate --save /etc/pacman.d/mirrorlist && pacman -Sy
+pacman -S reflector --noconfirm && reflector --verbose  -l 5 -p https --sort rate --save /etc/pacman.d/mirrorlist && pacman -Sy
 
 echo 'Установка основных пакетов'
 pacstrap /mnt base base-devel linux-zen linux-firmware linux-zen-headers crda amd-ucode nano dhcpcd netctl btrfs-progs
