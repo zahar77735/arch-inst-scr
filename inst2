@@ -102,7 +102,11 @@ elif [[ $vm_set == n || $vm_set == N ]]
   then echo 'Пропущена установка'
 fi
 
-read -p "Что ставим XFCE, KDE, MATE или GNOME ? Указать [G/X/K/M] Пропустить-Enter " vm_setting
+echo ""
+echo ""
+echo "Какое окружение будем ставить? Скрипт может установить XFCE, KDE или GNOME "
+echo "для этого укажите [G/X/K], Можно пропустить установку нажав Enter "
+read -p "Можно ввести произвольную команду либо команды разделяя их && "$'\n' vm_setting
 if [[ -z $vm_setting ]]
   then echo "Пропускаем установку GUI"
   sleep 5
@@ -122,11 +126,7 @@ elif [[ $vm_setting == g || $vm_setting == G ]]
   sleep 5
   systemctl enable gdm
   sleep 5
-elif [[ $vm_setting == m || $vm_setting == M ]] 
-  then pacman -S mate mate-terminal lightdm-gtk-greeter gthumb gnome-calculator gedit file-roller evince pank alsa-plugins pulseaudio-alsa --noconfirm
-  sleep 5
-  systemctl enable lidhtdm
-  sleep 5
+else $vm_setting
 fi
 
 echo "изменяем активный планировщик ввода-вывода"
