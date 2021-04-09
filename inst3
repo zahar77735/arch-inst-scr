@@ -132,7 +132,7 @@ elif [[ $wm == GNOME ]]; then
   cd background
   asd=`pwd`
   bash ./bgxml-gen $asd 10 3
-  yay -S chrome-gnome-shell-git --noconfirm
+  sudo pacman -S chrome-gnome-shell --noconfirm
 fi
 
 sudo pacman -S gst-libav gst-plugins-bad gst-plugins-base gst-plugins-good gst-plugins-ugly libde265 xine-lib --noconfirm
