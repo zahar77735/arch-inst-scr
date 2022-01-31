@@ -22,25 +22,6 @@ echo 'Вписываем KEYMAP=ru FONT=cyr-sun16'
 echo 'KEYMAP=ru' >> /etc/vconsole.conf
 echo 'FONT=cyr-sun16' >> /etc/vconsole.conf
 
-#если у нас SSD, то мы создадим zram
-ssd=$(cat /etc/fstab | grep ssd | wc -l)
-if [[ $ssd != 0 ]]; then
-	echo "У нас SSD и мы создаём ZRAM"
-	kern=$(cat /proc/cpuinfo | grep processor | wc -l)
-	echo 'zram' >> /etc/modules-load.d/zram.conf
-	echo 'options zram num_devices='$kern >> /etc/modprobe.d/zram.conf
-	mem=$(awk '/MemTotal/ {print $2}' /proc/meminfo)
-	let " var = $mem / 1000000 "
-	let " zram = $var * 1024 / 2 / $kern "
-	#echo $zram
-	for (( a = 0; a < $kern; a++ ))
-	do
-	echo 'KERNEL=="zram'$a'", ATTR{disksize}="'$zram'M" RUN="/usr/bin/mkswap /dev/zram'$a'", TAG+="systemd"' >> /etc/udev/rules.d/99-zram.rules
-	echo '/dev/zram'$a' none swap defaults 0 0' >> /etc/fstab
-	done
-	echo 'vm.swappiness=60' >> /etc/sysctl.conf
-fi
-
 echo 'Установка доп. приложений'
 pacman -S wget mc pkgfile man --noconfirm
 pkgfile --update
@@ -51,27 +32,9 @@ echo 'Создадим загрузочный RAM диск'
 mkinitcpio -p linux-zen
 
 echo '3.5 Устанавливаем загрузчик'
-pacman -S grub os-prober --noconfirm
+
 read -p "Куда ставим загрузчик: " devsection
-grub-install /dev/$devsection
 
-echo 'Обновляем grub.cfg'
-grub-mkconfig -o /boot/grub/grub.cfg
-
-read -p "Установить тему Tela для GRUB? [Y/n]" themes_grub
-if [[ -z $themes_grub || $themes_grub == y || $themes_grub == Y ]]
-  then wget https://raw.githubusercontent.com/zahar77735/arch-inst-scr/master/files/Tela.tar.xz
-  tar xvJf Tela.tar.xz
-  rm Tela.tar.xz
-  mkdir /boot/grub/themes
-  cp -a Tela /boot/grub/themes
-  rm -rf Tela
-  grep "GRUB_THEME=" /etc/default/grub 2>&1 >/dev/null && sed -i '/GRUB_THEME=/d' /etc/default/grub
-  echo "GRUB_THEME=\"/boot/grub/themes/Tela/theme.txt\"" >> /etc/default/grub
-  grub-mkconfig -o /boot/grub/grub.cfg
-elif [[ $themes_grub == n || $themes_grub == N ]]; then
-  echo 'Установка пропущена.'
-fi
 
 echo 'Ставим программу для Wi-fi'
 pacman -S dialog wpa_supplicant --noconfirm 
@@ -143,24 +106,6 @@ pacman -S networkmanager network-manager-applet ppp --noconfirm
 
 echo 'Подключаем автозагрузку менеджера входа и интернет'
 systemctl enable NetworkManager
-
-read -p 'Ваша видеокарта nVidia? Установить проприетарный драйвер? [Y/n] ' nvidia_set
-if [[ -z $nvidia_set || $nvidia_set == y || $nvidia_set == Y ]]
-  then sudo pacman -S nvidia-dkms nvidia-utils lib32-nvidia-utils nvidia-settings opencl-nvidia lib32-opencl-nvidia vulkan-icd-loader lib32-vulkan-icd-loader libva-vdpau-driver --noconfirm
-  sleep 15
-  sed -i 's/MODULES=(/MODULES=(nvidia nvidia_modeset nvidia_uvm nvidia_drm /' ./etc/mkinitcpio.conf
-  sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT="/GRUB_CMDLINE_LINUX_DEFAULT="nvidia-drm.modeset=1 /' ./etc/default/grub
-  sleep 10
-  mkinitcpio -p linux-zen
-  grub-mkconfig -o /boot/grub/grub.cfg
-  mkdir /etc/pacman.d/hooks
-  wget https://raw.githubusercontent.com/zahar77735/arch-inst-scr/master/files/nvidia.hook
-  mv nvidia.hook /etc/pacman.d/hooks/nvidia.hook
-  chmod 644 /etc/pacman.d/hooks/nvidia.hook
-  sleep 10
-elif [[ $nvidia_set == n || $nvidia_set == N ]]; then
-  echo 'Установка пропущена.'
-fi
 
 echo 'Установка завершена! Перезагрузите систему.'
 
