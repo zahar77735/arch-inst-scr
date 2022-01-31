@@ -32,9 +32,7 @@ echo 'Создадим загрузочный RAM диск'
 mkinitcpio -p linux-zen
 
 echo '3.5 Устанавливаем загрузчик'
-
-read -p "Куда ставим загрузчик: " devsection
-
+bootctl --path=esp install
 
 echo 'Ставим программу для Wi-fi'
 pacman -S dialog wpa_supplicant --noconfirm 
