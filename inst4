@@ -13,31 +13,68 @@ echo 'Создание разделов'
 echo 'Ваша разметка диска'
 lsblk
 
-read -p 'Выбрать диск? ' xhdd
-fdisk /dev/$xhdd
-read -p "Выберите раздел куда будет установлена система: " rootsection
-read -p "Введите имя метки тома: " mark
-read -p "Выберите раздел для boot: " efi
-mkfs.btrfs -f -L $mark /dev/$rootsection
-mkfs.fat -F32 /dev/$efi
-mount /dev/$rootsection /mnt
-btrfs subvolume create /mnt/sv_root
-btrfs subvolume create /mnt/sv_home
-btrfs subvolume create /mnt/sv_snapshots
-umount /mnt
-mount -o subvol=sv_root,defaults,noatime,autodefrag,compress=zstd,discard=async,ssd /dev/$rootsection /mnt
-mkdir /mnt/boot
-mkdir /mnt/home
-mkdir /mnt/snapshots
-mount -o subvol=sv_home,defaults,noatime,autodefrag,compress=zstd,discard=async,ssd /dev/$rootsection /mnt/home
-mount -o subvol=sv_snapshots,defaults,noatime,autodefrag,compress=zstd,discard=async,ssd /dev/$rootsection /mnt/snapshots
-mount /dev/$efi /mnt/boot
+var1=1
+while [ $var1 -gt 0 ]
+do
+	read -p "Выберите диск, куда будет установлена система (Пример: sda): " devsection
+	DI=$(cat /sys/block/$devsection/queue/rotational)
+	#echo $DI
+	if [[ $DI == 1 ]]; then
+		read -p 'Выбраный диск является HDD, разметить диск или выбрать другой [Y/n]? ' xhdd
+		if [[ -z $xhdd || $xhdd == y || $xhdd == Y ]]; then
+		cfdisk /dev/$devsection
+		read -p "swap будем создавать? [Y/n] " xswap
+		if [[ -z $xswap || $xswap == y || $xswap == Y ]]
+			then read -p "Выбор раздела для swap: " swapsection
+			mkswap /dev/$swapsection -L swap
+			swapon /dev/$swapsection
+		fi
+		read -p "Выберите раздел куда будет установлена система: " rootsection
+		read -p "Введите имя метки тома :" mark
+		mkfs.btrfs -f -L $mark /dev/$rootsection
+		mount /dev/$rootsection /mnt
+		btrfs subvolume create /mnt/sv_root
+		btrfs subvolume create /mnt/sv_home
+		btrfs subvolume create /mnt/sv_snapshots
+		umount /mnt
+		mount -o subvol=sv_root,compress=zstd,noatime,nodatacow,max_inline=256,space_cache,autodefrag /dev/$rootsection /mnt
+		mkdir /mnt/home
+		mkdir /mnt/snapshots
+		mount -o subvol=sv_home,compress=zstd,noatime,nodatacow,max_inline=256,space_cache,autodefrag /dev/$rootsection /mnt/home
+		mount -o subvol=sv_snapshots,compress=zstd,noatime,nodatacow,max_inline=256,space_cache,autodefrag /dev/$rootsection /mnt/snapshots
+		var1=0
+		elif [[ $xhdd == n || $xhdd == N ]]; then
+		var1=1
+		fi
+	else 
+		read -p 'Выбраный диск является SSD, разметить диск или выбрать другой [Y/n]? ' xhdd
+		if [[ -z $xhdd || $xhdd == y || $xhdd == Y ]]; then
+		cfdisk /dev/$devsection
+		read -p "Выберите раздел куда будет установлена система: " rootsection
+		read -p "Введите имя метки тома :" mark
+		mkfs.btrfs -f -L $mark /dev/$rootsection
+		mount /dev/$rootsection /mnt
+		btrfs subvolume create /mnt/sv_root
+		btrfs subvolume create /mnt/sv_home
+		btrfs subvolume create /mnt/sv_snapshots
+		umount /mnt
+		mount -o subvol=sv_root,compress=zstd,noatime,nodatacow,max_inline=256,ssd,space_cache,discard,autodefrag /dev/$rootsection /mnt
+		mkdir /mnt/home
+		mkdir /mnt/snapshots
+		mount -o subvol=sv_home,compress=zstd,noatime,nodatacow,max_inline=256,ssd,space_cache,discard,autodefrag /dev/$rootsection /mnt/home
+		mount -o subvol=sv_snapshots,compress=zstd,noatime,nodatacow,max_inline=256,ssd,space_cache,discard,autodefrag /dev/$rootsection /mnt/snapshots
+		var1=0
+		elif [[ $xhdd == n || $xhdd == N ]]; then
+		var1=1
+		fi
+	fi
+done
 
 echo 'Выбор зеркал для загрузки.'
 pacman -S reflector --noconfirm && reflector --verbose  -l 5 -p https --sort rate --save /etc/pacman.d/mirrorlist && pacman -Sy
 
 echo 'Установка основных пакетов'
-pacstrap /mnt base base-devel linux-zen linux-firmware linux-zen-headers intel-ucode nano dhcpcd netctl btrfs-progs
+pacstrap /mnt base base-devel linux-zen linux-firmware linux-zen-headers crda amd-ucode nano dhcpcd netctl btrfs-progs
 
 genfstab -pU /mnt >> /mnt/etc/fstab
 
