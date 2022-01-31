@@ -16,18 +16,22 @@ lsblk
 read -p 'Выбрать диск? ' xhdd
 fdisk /dev/$xhdd
 read -p "Выберите раздел куда будет установлена система: " rootsection
-read -p "Введите имя метки тома :" mark
+read -p "Введите имя метки тома: " mark
+read -p "Выберите раздел для boot: " efi
 mkfs.btrfs -f -L $mark /dev/$rootsection
+mkfs.fat -F32 /dev/$efi
 mount /dev/$rootsection /mnt
 btrfs subvolume create /mnt/sv_root
 btrfs subvolume create /mnt/sv_home
 btrfs subvolume create /mnt/sv_snapshots
 umount /mnt
 mount -o subvol=sv_root,defaults,noatime,autodefrag,compress=zstd,discard=async,ssd /dev/$rootsection /mnt
+mkdir /mnt/boot
 mkdir /mnt/home
 mkdir /mnt/snapshots
 mount -o subvol=sv_home,defaults,noatime,autodefrag,compress=zstd,discard=async,ssd /dev/$rootsection /mnt/home
 mount -o subvol=sv_snapshots,defaults,noatime,autodefrag,compress=zstd,discard=async,ssd /dev/$rootsection /mnt/snapshots
+mount /dev/$efi /mnt/boot
 
 echo 'Выбор зеркал для загрузки.'
 pacman -S reflector --noconfirm && reflector --verbose  -l 5 -p https --sort rate --save /etc/pacman.d/mirrorlist && pacman -Sy
