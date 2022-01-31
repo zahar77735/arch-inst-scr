@@ -19,7 +19,7 @@ read -p "Выберите раздел куда будет установлен�
 read -p "Введите имя метки тома: " mark
 read -p "Выберите раздел для boot: " efi
 mkfs.btrfs -f -L $mark /dev/$rootsection
-mkfs.fat -F 32 /dev/$efi
+#mkfs.fat -F 32 /dev/$efi
 mount /dev/$rootsection /mnt
 btrfs subvolume create /mnt/sv_root
 btrfs subvolume create /mnt/sv_home
@@ -31,7 +31,7 @@ mkdir /mnt/home
 mkdir /mnt/snapshots
 mount -o subvol=sv_home,defaults,noatime,autodefrag,compress=zstd,discard=async,ssd /dev/$rootsection /mnt/home
 mount -o subvol=sv_snapshots,defaults,noatime,autodefrag,compress=zstd,discard=async,ssd /dev/$rootsection /mnt/snapshots
-mount /dev/$efi /mnt/boot
+mount -t vfat /dev/$efi /mnt/boot
 
 echo 'Выбор зеркал для загрузки.'
 pacman -S reflector --noconfirm && reflector --verbose  -l 5 -p https --sort rate --save /etc/pacman.d/mirrorlist && pacman -Sy
