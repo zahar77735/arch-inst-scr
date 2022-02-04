@@ -10,8 +10,8 @@ source /home/$USER/.bashrc
 sleep 5
 
 echo 'Установка программ'
-sudo pacman -S curl  cronie reflector gparted youtube-dl gpart exfat-utils gnome-disk-utility ffmpeg git yajl ufw f2fs-tools dosfstools mtools ntfs-3g alsa-lib alsa-utils p7zip unrar gvfs aspell-ru pulseaudio pavucontrol --noconfirm
-sudo pacman -R firefox --noconfirm
+sudo pacman -S curl reflector gparted youtube-dl gpart exfat-utils gnome-disk-utility ffmpeg git yajl ufw f2fs-tools dosfstools mtools ntfs-3g alsa-lib alsa-utils p7zip unrar gvfs aspell-ru pulseaudio pavucontrol --noconfirm
+#sudo pacman -R firefox --noconfirm
 
 echo 'Установка AUR'
 mkdir -p /tmp/yay_install
@@ -20,6 +20,7 @@ git clone https://aur.archlinux.org/yay.git
 cd yay
 makepkg -sir --needed --noconfirm --skippgpcheck
 cd ..
+cd ..
 rm -rf yay_install
 clear
 
@@ -27,8 +28,10 @@ echo 'Установка Pamac'
 mkdir -p /tmp/pamac-aur_install
 cd /tmp/pamac-aur_install
 git clone https://aur.archlinux.org/pamac-aur.git
+yay -S libpamac-aur archlinux-appstream-data-pamac
 cd pamac-aur
 makepkg -si --needed --noconfirm --skippgpcheck
+cd ..
 cd ..
 rm -rf pamac-aur_install
 
