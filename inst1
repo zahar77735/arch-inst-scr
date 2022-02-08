@@ -26,6 +26,7 @@ btrfs subvolume create /mnt/@home
 btrfs subvolume create /mnt/@snapshots
 umount /mnt
 mount -o subvol=/@,defaults,noatime,autodefrag,compress=zstd,discard=async,ssd /dev/$rootsection /mnt
+mkdir /mnt/boot
 mkdir /mnt/boot/efi
 mkdir /mnt/home
 mkdir /mnt/snapshots
