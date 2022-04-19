@@ -39,7 +39,7 @@ mount -o subvol=/@log,defaults,noatime,autodefrag,compress=zstd,discard=async,ss
 mount -t vfat /dev/$efi /mnt/boot/efi
 
 echo 'Выбор зеркал для загрузки.'
-nano /etc/pacman.d/mirrorlist.conf
+nano /etc/pacman.d/mirrorlist
 pacman -Sy
 
 echo 'Установка основных пакетов'
