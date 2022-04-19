@@ -39,10 +39,11 @@ mount -o subvol=/@log,defaults,noatime,autodefrag,compress=zstd,discard=async,ss
 mount -t vfat /dev/$efi /mnt/boot/efi
 
 echo 'Выбор зеркал для загрузки.'
-pacman -S reflector --noconfirm && reflector --verbose  -l 5 -p https --sort rate --save /etc/pacman.d/mirrorlist && pacman -Sy
+nano /etc/pacman.d/mirrorlist.conf
+pacman -Sy
 
 echo 'Установка основных пакетов'
-pacstrap /mnt base base-devel linux-zen linux-firmware linux-zen-headers intel-ucode nano dhcpcd netctl btrfs-progs
+pacstrap /mnt base base-devel linux-zen linux-firmware linux-zen-headers intel-ucode nano dhcpcd iwd btrfs-progs
 
 genfstab -pU /mnt >> /mnt/etc/fstab
 
