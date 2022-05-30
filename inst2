@@ -23,23 +23,23 @@ echo 'KEYMAP=ru' >> /etc/vconsole.conf
 echo 'FONT=cyr-sun16' >> /etc/vconsole.conf
 
 #если у нас SSD, то мы создадим zram
-ssd=$(cat /etc/fstab | grep ssd | wc -l)
-if [[ $ssd != 0 ]]; then
-	echo "У нас SSD и мы создаём ZRAM"
-	kern=$(cat /proc/cpuinfo | grep processor | wc -l)
-	echo 'zram' >> /etc/modules-load.d/zram.conf
-	echo 'options zram num_devices='$kern >> /etc/modprobe.d/zram.conf
-	mem=$(awk '/MemTotal/ {print $2}' /proc/meminfo)
-	let " var = $mem / 1000000 "
-	let " zram = $var * 1024 / 2 / $kern "
-	#echo $zram
-	for (( a = 0; a < $kern; a++ ))
-	do
-	echo 'KERNEL=="zram'$a'", ATTR{disksize}="'$zram'M" RUN="/usr/bin/mkswap /dev/zram'$a'", TAG+="systemd"' >> /etc/udev/rules.d/99-zram.rules
-	echo '/dev/zram'$a' none swap defaults 0 0' >> /etc/fstab
-	done
-	echo 'vm.swappiness=60' >> /etc/sysctl.conf
-fi
+#ssd=$(cat /etc/fstab | grep ssd | wc -l)
+#if [[ $ssd != 0 ]]; then
+#	echo "У нас SSD и мы создаём ZRAM"
+#	kern=$(cat /proc/cpuinfo | grep processor | wc -l)
+#	echo 'zram' >> /etc/modules-load.d/zram.conf
+#	echo 'options zram num_devices='$kern >> /etc/modprobe.d/zram.conf
+#	mem=$(awk '/MemTotal/ {print $2}' /proc/meminfo)
+#	let " var = $mem / 1000000 "
+#	let " zram = $var * 1024 / 2 / $kern "
+#	#echo $zram
+#	for (( a = 0; a < $kern; a++ ))
+#	do
+#	echo 'KERNEL=="zram'$a'", ATTR{disksize}="'$zram'M" RUN="/usr/bin/mkswap /dev/zram'$a'", TAG+="systemd"' >> /etc/udev/rules.d/99-zram.rules
+#	echo '/dev/zram'$a' none swap defaults 0 0' >> /etc/fstab
+#	done
+#	echo 'vm.swappiness=60' >> /etc/sysctl.conf
+#fi
 
 echo 'Установка доп. приложений'
 pacman -S wget mc pkgfile man --noconfirm
