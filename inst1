@@ -43,7 +43,7 @@ nano /etc/pacman.d/mirrorlist
 pacman -Sy
 
 echo 'Установка основных пакетов'
-pacstrap /mnt base base-devel linux-zen linux-firmware linux-zen-headers intel-ucode nano btrfs-progs
+pacstrap /mnt base base-devel linux-zen linux-firmware linux-zen-headers intel-ucode nano btrfs-progs realtime-privileges
 
 genfstab -pU /mnt >> /mnt/etc/fstab
 
