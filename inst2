@@ -160,6 +160,7 @@ pacman -S networkmanager network-manager-applet ppp --noconfirm
 
 echo 'Подключаем автозагрузку менеджера входа и интернет'
 systemctl enable NetworkManager
+systemctl mask NetworkManager-wait-online
 
 echo 'Установка завершена! Перезагрузите систему.'
 
