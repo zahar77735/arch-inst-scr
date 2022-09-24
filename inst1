@@ -25,7 +25,7 @@ btrfs subvolume create /mnt/@
 btrfs subvolume create /mnt/@home
 btrfs subvolume create /mnt/@cache
 btrfs subvolume create /mnt/@log
-umount /mnt
+umount /mnt -R
 mount -o subvol=/@,defaults,noatime,autodefrag,compress=zstd,discard=async,ssd /dev/$rootsection /mnt
 mkdir /mnt/boot
 mkdir /mnt/boot/efi
