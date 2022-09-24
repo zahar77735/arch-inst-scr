@@ -50,15 +50,8 @@ sed -i 's/HOOKS=(base udev autodetect modconf block filesystems keyboard fsck)/H
 echo 'Создадим загрузочный RAM диск'
 mkinitcpio -p linux-zen
 
-echo '3.5 Устанавливаем загрузчик'
-#read -p "Введите раздел куда установим загрузчик: " esp
-bootctl install
-mv /boot/loader/loader.conf /boot/loader/loader.conf.bak
-touch /boot/loader/loader.conf
-echo 'default linux-zen.conf' >> /boot/loader/loader.conf
-echo 'timeout 0' >> /boot/loader/loader.conf
-echo 'console-mode auto' >> /boot/loader/loader.conf
-echo 'editor no' >> /boot/loader/loader.conf
+
+
 #pacman -S grub efibootmgr os-prober
 #grub-install --target=x86_64-efi --efi-directory=/boot/efi/ --bootloader-id=GRUB
 #grub-mkconfig -o /boot/grub/grub.cfg
@@ -167,6 +160,21 @@ pacman -S networkmanager network-manager-applet ppp --noconfirm
 echo 'Подключаем автозагрузку менеджера входа и интернет'
 systemctl enable NetworkManager
 systemctl mask NetworkManager-wait-online
+
+echo 'Устанавливаем загрузчик'
+bootctl install
+mv /boot/loader/loader.conf /boot/loader/loader.conf.bak
+touch /boot/loader/loader.conf
+echo 'default linux-zen.conf' >> /boot/loader/loader.conf
+echo 'timeout 0' >> /boot/loader/loader.conf
+echo 'console-mode auto' >> /boot/loader/loader.conf
+echo 'editor no' >> /boot/loader/loader.conf
+touch /boot/loader/entries/linux-zen.conf
+echo 'tittle linux-zen' >> /boot/loader/entries/linux-zen.conf
+echo 'linux /vmlinuz-linux-zen' >> /boot/loader/entries/linux-zen.conf
+echo 'initrd /intel-ucode.img' >> /boot/loader/entries/linux-zen.conf
+echo 'initrd /initramfs-linux-zen.img' >> /boot/loader/entries/linux-zen.conf
+echo 'options root="LABEL=ArchLinux" rw rootflags=subvol=@ nowatchdog loglevel=6 rootfstype=btrfs nvidia-drm.modeset=1' >> /boot/loader/entries/linux-zen.conf
 
 echo 'Установка завершена! Перезагрузите систему.'
 
