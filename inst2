@@ -11,9 +11,6 @@ echo '3.4 Добавляем русскую локаль системы'
 echo "en_US.UTF-8 UTF-8" > /etc/locale.gen
 echo "ru_RU.UTF-8 UTF-8" >> /etc/locale.gen 
 
-echo 'Обновим текущую локаль системы'
-locale-gen
-
 echo 'Указываем язык системы'
 echo 'LANG="ru_RU.UTF-8"' >> /etc/locale.conf
 echo 'LC_MESSAGES="ru_RU.UTF-8"' >> /etc/locale.conf
@@ -21,6 +18,9 @@ echo 'LC_MESSAGES="ru_RU.UTF-8"' >> /etc/locale.conf
 echo 'Вписываем KEYMAP=ru FONT=cyr-sun16'
 echo 'KEYMAP=ru' >> /etc/vconsole.conf
 echo 'FONT=cyr-sun16' >> /etc/vconsole.conf
+
+echo 'Обновим текущую локаль системы'
+locale-gen
 
 #если у нас SSD, то мы создадим zram
 #ssd=$(cat /etc/fstab | grep ssd | wc -l)
@@ -42,7 +42,7 @@ echo 'FONT=cyr-sun16' >> /etc/vconsole.conf
 #fi
 
 echo 'Установка доп. приложений'
-pacman -S wget mc pkgfile man --noconfirm
+pacman -S wget mc pkgfile --noconfirm
 pkgfile --update
 
 sed -i 's/HOOKS=(base udev autodetect modconf block filesystems keyboard fsck)/HOOKS=(base udev autodetect modconf block filesystems keyboard)/' ./etc/mkinitcpio.conf
@@ -53,33 +53,33 @@ mkinitcpio -p linux-zen
 echo '3.5 Устанавливаем загрузчик'
 #read -p "Введите раздел куда установим загрузчик: " esp
 #bootctl --path=/boot install
-pacman -S grub efibootmgr os-prober
-grub-install --target=x86_64-efi --efi-directory=/boot/efi/ --bootloader-id=GRUB
-grub-mkconfig -o /boot/grub/grub.cfg
+#pacman -S grub efibootmgr os-prober
+#grub-install --target=x86_64-efi --efi-directory=/boot/efi/ --bootloader-id=GRUB
+#grub-mkconfig -o /boot/grub/grub.cfg
 
-read -p "Установить тему Tela для GRUB? [Y/n]" themes_grub
-if [[ -z $themes_grub || $themes_grub == y || $themes_grub == Y ]]
-  then wget https://raw.githubusercontent.com/zahar77735/arch-inst-scr/master/files/Tela.tar.xz
-  tar xvJf Tela.tar.xz
-  rm Tela.tar.xz
-  mkdir /boot/grub/themes
-  cp -a Tela /boot/grub/themes
-  rm -rf Tela
-  grep "GRUB_THEME=" /etc/default/grub 2>&1 >/dev/null && sed -i '/GRUB_THEME=/d' /etc/default/grub
-  echo "GRUB_THEME=\"/boot/grub/themes/Tela/theme.txt\"" >> /etc/default/grub
-  grub-mkconfig -o /boot/grub/grub.cfg
-elif [[ $themes_grub == n || $themes_grub == N ]]; then
-  echo 'Установка пропущена.'
-fi
+#read -p "Установить тему Tela для GRUB? [Y/n]" themes_grub
+#if [[ -z $themes_grub || $themes_grub == y || $themes_grub == Y ]]
+#  then wget https://raw.githubusercontent.com/zahar77735/arch-inst-scr/master/files/Tela.tar.xz
+#  tar xvJf Tela.tar.xz
+#  rm Tela.tar.xz
+#  mkdir /boot/grub/themes
+#  cp -a Tela /boot/grub/themes
+#  rm -rf Tela
+#  grep "GRUB_THEME=" /etc/default/grub 2>&1 >/dev/null && sed -i '/GRUB_THEME=/d' /etc/default/grub
+#  echo "GRUB_THEME=\"/boot/grub/themes/Tela/theme.txt\"" >> /etc/default/grub
+#  grub-mkconfig -o /boot/grub/grub.cfg
+#elif [[ $themes_grub == n || $themes_grub == N ]]; then
+#  echo 'Установка пропущена.'
+#fi
 
-echo 'Ставим программу для Wi-fi'
-pacman -S dialog wpa_supplicant --noconfirm 
-
-echo 'Добавляем пользователя'
-useradd -m -g users -G wheel,audio,video,storage -s /bin/bash $username
+#echo 'Ставим программу для Wi-fi'
+#pacman -S dialog wpa_supplicant --noconfirm 
 
 echo 'Создаем root пароль'
 passwd
+
+echo 'Добавляем пользователя'
+useradd -m -g users -G wheel,audio,video,storage -s /bin/bash $username
 
 echo 'Устанавливаем пароль пользователя'
 passwd $username
@@ -106,10 +106,10 @@ if [[ -z $nvidia_set || $nvidia_set == y || $nvidia_set == Y ]]
   then sudo pacman -S nvidia-dkms nvidia-utils lib32-nvidia-utils nvidia-settings opencl-nvidia lib32-opencl-nvidia vulkan-icd-loader lib32-vulkan-icd-loader libva-vdpau-driver --noconfirm
   sleep 15
   sed -i 's/MODULES=(/MODULES=(nvidia nvidia_modeset nvidia_uvm nvidia_drm /' ./etc/mkinitcpio.conf
-  sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT="/GRUB_CMDLINE_LINUX_DEFAULT="nvidia-drm.modeset=1 /' ./etc/default/grub
+#  sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT="/GRUB_CMDLINE_LINUX_DEFAULT="nvidia-drm.modeset=1 /' ./etc/default/grub
   sleep 10
   mkinitcpio -p linux-zen
-  grub-mkconfig -o /boot/grub/grub.cfg
+#  grub-mkconfig -o /boot/grub/grub.cfg
   mkdir /etc/pacman.d/hooks
   wget https://raw.githubusercontent.com/zahar77735/arch-inst-scr/master/files/nvidia.hook
   mv nvidia.hook /etc/pacman.d/hooks/nvidia.hook
