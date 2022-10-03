@@ -163,18 +163,19 @@ systemctl mask NetworkManager-wait-online
 
 echo 'Устанавливаем загрузчик'
 bootctl install
+sleep 10
 mv /boot/loader/loader.conf /boot/loader/loader.conf.bak
 touch /boot/loader/loader.conf
-echo 'default linux-zen.conf' >> /boot/loader/loader.conf
+echo 'default archlinux.conf' >> /boot/loader/loader.conf
 echo 'timeout 0' >> /boot/loader/loader.conf
 echo 'console-mode auto' >> /boot/loader/loader.conf
 echo 'editor no' >> /boot/loader/loader.conf
-touch /boot/loader/entries/linux-zen.conf
-echo 'tittle linux-zen' >> /boot/loader/entries/linux-zen.conf
-echo 'linux /vmlinuz-linux-zen' >> /boot/loader/entries/linux-zen.conf
-echo 'initrd /intel-ucode.img' >> /boot/loader/entries/linux-zen.conf
-echo 'initrd /initramfs-linux-zen.img' >> /boot/loader/entries/linux-zen.conf
-echo 'options root="LABEL=ArchLinux" rw rootflags=subvol=@ nowatchdog loglevel=6 rootfstype=btrfs nvidia-drm.modeset=1' >> /boot/loader/entries/linux-zen.conf
+touch /boot/loader/entries/archlinux.conf
+echo 'tittle archlinux' >> /boot/loader/entries/archlinux.conf
+echo 'linux /vmlinuz-linux' >> /boot/loader/entries/archlinux.conf
+echo 'initrd /intel-ucode.img' >> /boot/loader/entries/archlinux.conf
+echo 'initrd /initramfs-linux.img' >> /boot/loader/entries/archlinux.conf
+echo 'options root="LABEL=ArchLinux" rw rootflags=subvol=@ nowatchdog loglevel=6 rootfstype=btrfs nvidia-drm.modeset=1' >> /boot/loader/entries/archlinux.conf
 
 echo 'Установка завершена! Перезагрузите систему.'
 
