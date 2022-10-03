@@ -48,7 +48,7 @@ pkgfile --update
 sed -i 's/HOOKS=(base udev autodetect modconf block filesystems keyboard fsck)/HOOKS=(base udev autodetect modconf block filesystems keyboard)/' ./etc/mkinitcpio.conf
 
 echo 'Создадим загрузочный RAM диск'
-mkinitcpio -p linux-zen
+mkinitcpio -p linux
 
 
 
@@ -107,7 +107,7 @@ if [[ -z $nvidia_set || $nvidia_set == y || $nvidia_set == Y ]]
   sed -i 's/MODULES=(/MODULES=(nvidia nvidia_modeset nvidia_uvm nvidia_drm /' ./etc/mkinitcpio.conf
 #  sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT="/GRUB_CMDLINE_LINUX_DEFAULT="nvidia-drm.modeset=1 /' ./etc/default/grub
   sleep 10
-  mkinitcpio -p linux-zen
+  mkinitcpio -p linux
 #  grub-mkconfig -o /boot/grub/grub.cfg
   mkdir /etc/pacman.d/hooks
   wget https://raw.githubusercontent.com/zahar77735/arch-inst-scr/master/files/nvidia.hook
@@ -138,18 +138,18 @@ elif [[ $vm_setting == k || $vm_setting == K ]]
   systemctl enable sddm
   sleep 5
 elif [[ $vm_setting == g || $vm_setting == G ]] 
-  then pacman -S gnome gnome-shell gdm gnome-tweaks gthumb --noconfirm
+  then pacman -S gnome gnome-shell gdm gnome-tweaks gthumb
   sleep 5
   systemctl enable gdm
   sleep 5
 else $vm_setting
 fi
 
-echo "изменяем активный планировщик ввода-вывода"
-wget https://raw.githubusercontent.com/zahar77735/arch-inst-scr/master/files/60-ioschedulers.rules
-mv 60-ioschedulers.rules /etc/udev/rules.d/60-ioschedulers.rules
-chmod 644 /etc/udev/rules.d/60-ioschedulers.rules
-sleep 5
+#echo "изменяем активный планировщик ввода-вывода"
+#wget https://raw.githubusercontent.com/zahar77735/arch-inst-scr/master/files/60-ioschedulers.rules
+#mv 60-ioschedulers.rules /etc/udev/rules.d/60-ioschedulers.rules
+#chmod 644 /etc/udev/rules.d/60-ioschedulers.rules
+#sleep 5
 
 echo 'Ставим шрифты'
 pacman -S ttf-liberation ttf-dejavu ttf-ubuntu-font-family --noconfirm 
