@@ -38,12 +38,12 @@ mount -o subvol=/@cache,rw,noatime,autodefrag,compress=zstd:3,discard=async,ssd,
 mount -o subvol=/@log,rw,noatime,autodefrag,compress=zstd:3,discard=async,ssd,ssd_spread,space_cache=v2 /dev/$rootsection /mnt/var/log
 mount -t vfat /dev/$efi /mnt/boot
 
-echo 'Выбор зеркал для загрузки.'
-nano /etc/pacman.d/mirrorlist
+#echo 'Выбор зеркал для загрузки.'
+#nano /etc/pacman.d/mirrorlist
 pacman -Sy
 
 echo 'Установка основных пакетов'
-pacstrap /mnt base base-devel linux-zen linux-firmware linux-zen-headers intel-ucode nano btrfs-progs realtime-privileges
+pacstrap /mnt base base-devel linux linux-firmware linux-headers intel-ucode nano btrfs-progs realtime-privileges
 
 genfstab -pU /mnt >> /mnt/etc/fstab
 
