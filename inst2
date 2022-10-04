@@ -170,6 +170,7 @@ echo 'default archlinux.conf' >> /boot/loader/loader.conf
 echo 'timeout 0' >> /boot/loader/loader.conf
 echo 'console-mode auto' >> /boot/loader/loader.conf
 echo 'editor no' >> /boot/loader/loader.conf
+mv /boot/loader/entries/archlinux'.conf /boot/loader/entries/archlinux.conf.bak
 touch /boot/loader/entries/archlinux.conf
 echo 'tittle archlinux' >> /boot/loader/entries/archlinux.conf
 echo 'linux /vmlinuz-linux' >> /boot/loader/entries/archlinux.conf
