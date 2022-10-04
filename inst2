@@ -144,6 +144,7 @@ elif [[ $vm_setting == g || $vm_setting == G ]]
   sleep 5
 else $vm_setting
 fi
+sleep 10
 
 #echo "изменяем активный планировщик ввода-вывода"
 #wget https://raw.githubusercontent.com/zahar77735/arch-inst-scr/master/files/60-ioschedulers.rules
