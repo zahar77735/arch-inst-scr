@@ -91,6 +91,7 @@ echo '[multilib]' >> /etc/pacman.conf
 echo 'Include = /etc/pacman.d/mirrorlist' >> /etc/pacman.conf
 pacman-key --init
 pacman-key --populate archlinux
+pacman-key --refresh-keys
 pacman -Syy
 
 read -p "Установить иксы? [Y/n]" vm_set
@@ -177,6 +178,10 @@ echo 'linux /vmlinuz-linux' >> /boot/loader/entries/archlinux.conf
 echo 'initrd /intel-ucode.img' >> /boot/loader/entries/archlinux.conf
 echo 'initrd /initramfs-linux.img' >> /boot/loader/entries/archlinux.conf
 echo 'options root="LABEL=ArchLinux" rw rootflags=subvol=@ nowatchdog loglevel=6 rootfstype=btrfs nvidia-drm.modeset=1' >> /boot/loader/entries/archlinux.conf
+
+pacman -S reflector rsync gparted youtube-dl gpart exfat-utils ffmpeg git ufw dosfstools mtools ntfs-3g alsa-lib alsa-utils p7zip unrar lrzip unzip unace squashfs-tools pipewire lib32-pipewire wireplumber pipewire-alsa pipewire-pulse pipewire-jack lib32-pipewire-jack
+
+reflector --verbose --country 'Germany' -l 10 --sort rate --save /etc/pacman.d/mirrorlist
 
 echo 'Установка завершена! Перезагрузите систему.'
 
