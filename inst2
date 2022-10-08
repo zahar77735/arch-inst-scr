@@ -52,9 +52,9 @@ mkinitcpio -p linux
 
 
 
-#pacman -S grub efibootmgr os-prober
-#grub-install --target=x86_64-efi --efi-directory=/boot/efi/ --bootloader-id=GRUB
-#grub-mkconfig -o /boot/grub/grub.cfg
+pacman -S grub efibootmgr os-prober
+grub-install --target=x86_64-efi --efi-directory=/boot/efi/ --bootloader-id=GRUB
+grub-mkconfig -o /boot/grub/grub.cfg
 
 #read -p "Установить тему Tela для GRUB? [Y/n]" themes_grub
 #if [[ -z $themes_grub || $themes_grub == y || $themes_grub == Y ]]
@@ -106,10 +106,10 @@ if [[ -z $nvidia_set || $nvidia_set == y || $nvidia_set == Y ]]
   then sudo pacman -S nvidia-dkms nvidia-utils lib32-nvidia-utils nvidia-settings opencl-nvidia lib32-opencl-nvidia vulkan-icd-loader lib32-vulkan-icd-loader libva-vdpau-driver --noconfirm
   sleep 15
   sed -i 's/MODULES=(/MODULES=(nvidia nvidia_modeset nvidia_uvm nvidia_drm /' ./etc/mkinitcpio.conf
-#  sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT="/GRUB_CMDLINE_LINUX_DEFAULT="nvidia-drm.modeset=1 /' ./etc/default/grub
+  sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT="/GRUB_CMDLINE_LINUX_DEFAULT="nvidia-drm.modeset=1 /' ./etc/default/grub
   sleep 10
   mkinitcpio -p linux
-#  grub-mkconfig -o /boot/grub/grub.cfg
+  grub-mkconfig -o /boot/grub/grub.cfg
   mkdir /etc/pacman.d/hooks
   wget https://raw.githubusercontent.com/zahar77735/arch-inst-scr/master/files/nvidia.hook
   mv nvidia.hook /etc/pacman.d/hooks/nvidia.hook
@@ -163,21 +163,21 @@ echo 'Подключаем автозагрузку менеджера вход�
 systemctl enable NetworkManager
 systemctl mask NetworkManager-wait-online
 
-echo 'Устанавливаем загрузчик'
-bootctl install
-sleep 10
-mv /boot/loader/loader.conf /boot/loader/loader.conf.bak
-touch /boot/loader/loader.conf
-echo 'default archlinux.conf' >> /boot/loader/loader.conf
-echo 'timeout 0' >> /boot/loader/loader.conf
-echo 'console-mode auto' >> /boot/loader/loader.conf
-echo 'editor no' >> /boot/loader/loader.conf
-touch /boot/loader/entries/archlinux.conf
-echo 'tittle archlinux' >> /boot/loader/entries/archlinux.conf
-echo 'linux /vmlinuz-linux' >> /boot/loader/entries/archlinux.conf
-echo 'initrd /intel-ucode.img' >> /boot/loader/entries/archlinux.conf
-echo 'initrd /initramfs-linux.img' >> /boot/loader/entries/archlinux.conf
-echo 'options root="LABEL=ArchLinux" rw rootflags=subvol=@ nowatchdog loglevel=6 rootfstype=btrfs nvidia-drm.modeset=1' >> /boot/loader/entries/archlinux.conf
+#echo 'Устанавливаем загрузчик'
+#bootctl install
+#sleep 10
+#mv /boot/loader/loader.conf /boot/loader/loader.conf.bak
+#touch /boot/loader/loader.conf
+#echo 'default archlinux.conf' >> /boot/loader/loader.conf
+#echo 'timeout 0' >> /boot/loader/loader.conf
+#echo 'console-mode auto' >> /boot/loader/loader.conf
+#echo 'editor no' >> /boot/loader/loader.conf
+#touch /boot/loader/entries/archlinux.conf
+#echo 'tittle archlinux' >> /boot/loader/entries/archlinux.conf
+#echo 'linux /vmlinuz-linux' >> /boot/loader/entries/archlinux.conf
+#echo 'initrd /intel-ucode.img' >> /boot/loader/entries/archlinux.conf
+#echo 'initrd /initramfs-linux.img' >> /boot/loader/entries/archlinux.conf
+#echo 'options root="LABEL=ArchLinux" rw rootflags=subvol=@ nowatchdog loglevel=6 rootfstype=btrfs nvidia-drm.modeset=1' >> /boot/loader/entries/archlinux.conf
 
 pacman -S reflector rsync gparted youtube-dl gpart exfat-utils ffmpeg git ufw dosfstools mtools ntfs-3g alsa-lib alsa-utils p7zip unrar lrzip unzip unace squashfs-tools pipewire lib32-pipewire wireplumber pipewire-alsa pipewire-pulse pipewire-jack lib32-pipewire-jack
 
