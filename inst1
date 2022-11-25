@@ -43,7 +43,7 @@ mount -t vfat /dev/$efi /mnt/boot/efi
 pacman -Sy
 
 echo 'Установка основных пакетов'
-pacstrap /mnt base base-devel linux linux-firmware linux-headers intel-ucode nano btrfs-progs realtime-privileges
+pacstrap /mnt base base-devel linux-zen linux-firmware linux-zen-headers intel-ucode nano btrfs-progs realtime-privileges
 
 genfstab -pU /mnt >> /mnt/etc/fstab
 
