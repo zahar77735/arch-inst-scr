@@ -48,7 +48,7 @@ pkgfile --update
 sed -i 's/HOOKS=(base udev autodetect modconf block filesystems keyboard fsck)/HOOKS=(base udev autodetect modconf block filesystems keyboard)/' ./etc/mkinitcpio.conf
 
 echo 'Создадим загрузочный RAM диск'
-mkinitcpio -p linux
+mkinitcpio -p linux-zen
 
 
 
