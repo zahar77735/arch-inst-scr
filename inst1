@@ -23,8 +23,6 @@ mkfs.fat -F32 /dev/$efi
 mount /dev/$rootsection /mnt
 btrfs subvolume create /mnt/@
 btrfs subvolume create /mnt/@home
-btrfs subvolume create /mnt/@cache
-btrfs subvolume create /mnt/@log
 umount /mnt -R
 mount -o subvol=/@,rw,noatime,autodefrag,compress=zstd:3,discard=async,ssd,ssd_spread,space_cache=v2 /dev/$rootsection /mnt
 mkdir /mnt/boot
