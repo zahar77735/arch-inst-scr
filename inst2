@@ -108,7 +108,7 @@ if [[ -z $nvidia_set || $nvidia_set == y || $nvidia_set == Y ]]
   sed -i 's/MODULES=(/MODULES=(nvidia nvidia_modeset nvidia_uvm nvidia_drm /' ./etc/mkinitcpio.conf
   sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT="/GRUB_CMDLINE_LINUX_DEFAULT="nvidia-drm.modeset=1 /' ./etc/default/grub
   sleep 10
-  mkinitcpio -p linux
+  mkinitcpio -p linux-zen
   grub-mkconfig -o /boot/grub/grub.cfg
   mkdir /etc/pacman.d/hooks
   wget https://raw.githubusercontent.com/zahar77735/arch-inst-scr/master/files/nvidia.hook
