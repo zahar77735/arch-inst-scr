@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/zsh
 clear
 loadkeys ru
 setfont cyr-sun16
