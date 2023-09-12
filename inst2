@@ -128,8 +128,9 @@ if [[ -z $vm_setting ]]
   then echo "Пропускаем установку GUI"
   sleep 5
 elif [[ $vm_setting == x || $vm_setting == X ]]
-  then pacman -S xfce4 xfce4-goodies file-roller gthumb plank gnome-calculator gedit dconf-editor pantheon-polkit-agent evince alsa-plugins pulseaudio-alsa libmtp mtpfs gvfs-mtp gvfs-gphoto2 --noconfirm
-  pacman -Rscu mousepad --noconfirm
+  #then pacman -S xfce4 xfce4-goodies file-roller gthumb plank gnome-calculator gedit dconf-editor pantheon-polkit-agent evince alsa-plugins pulseaudio-alsa libmtp mtpfs gvfs-mtp gvfs-gphoto2 --noconfirm
+  then pacman -S xfce4 xfce4-goodies file-roller gthumb plank gnome-calculator evince alsa-plugins libmtp mtpfs gvfs-mtp gvfs-gphoto2 --noconfirm
+  #pacman -Rscu mousepad --noconfirm
   pacman -S lightdm-gtk-greeter --noconfirm
   systemctl enable lightdm
   sleep 5
@@ -179,7 +180,7 @@ systemctl mask NetworkManager-wait-online
 #echo 'initrd /initramfs-linux.img' >> /boot/loader/entries/archlinux.conf
 #echo 'options root="LABEL=ArchLinux" rw rootflags=subvol=@ nowatchdog loglevel=6 rootfstype=btrfs nvidia-drm.modeset=1' >> /boot/loader/entries/archlinux.conf
 
-pacman -S reflector rsync gparted youtube-dl gpart exfat-utils ffmpeg git ufw dosfstools mtools ntfs-3g alsa-lib alsa-utils p7zip unrar lrzip unzip unace squashfs-tools pipewire lib32-pipewire wireplumber pipewire-alsa pipewire-pulse pipewire-jack lib32-pipewire-jack
+pacman -S reflector rsync gparted gpart exfat-utils ffmpeg git ufw dosfstools mtools ntfs-3g alsa-lib alsa-utils p7zip unrar lrzip unzip unace squashfs-tools pipewire lib32-pipewire wireplumber pipewire-alsa pipewire-pulse pipewire-jack lib32-pipewire-jack
 
 reflector --verbose --country 'Germany' -l 10 --sort rate --save /etc/pacman.d/mirrorlist
 
