@@ -90,7 +90,7 @@ echo 'Раскомментируем репозиторий multilib Для ра
 echo '[multilib]' >> /etc/pacman.conf
 echo 'Include = /etc/pacman.d/mirrorlist' >> /etc/pacman.conf
 pacman-key --init
-pacman-key --populate archlinux
+#pacman-key --populate archlinux
 pacman-key --refresh-keys
 pacman -Syy
 
