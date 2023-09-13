@@ -45,6 +45,9 @@ echo 'Установка доп. приложений'
 pacman -S wget mc pkgfile --noconfirm
 pkgfile --update
 
+pacman -S reflector rsync gparted gpart exfat-utils ffmpeg git ufw dosfstools mtools ntfs-3g alsa-lib alsa-utils p7zip unrar lrzip unzip unace squashfs-tools pipewire lib32-pipewire wireplumber pipewire-alsa pipewire-pulse pipewire-jack lib32-pipewire-jack
+
+
 sed -i 's/HOOKS=(base udev autodetect modconf block filesystems keyboard fsck)/HOOKS=(base udev autodetect modconf block filesystems keyboard)/' ./etc/mkinitcpio.conf
 
 echo 'Создадим загрузочный RAM диск'
@@ -89,9 +92,9 @@ echo '%wheel ALL=(ALL) ALL' >> /etc/sudoers
 echo 'Раскомментируем репозиторий multilib Для работы 32-битных приложений в 64-битной системе.'
 echo '[multilib]' >> /etc/pacman.conf
 echo 'Include = /etc/pacman.d/mirrorlist' >> /etc/pacman.conf
-pacman-key --init
+#pacman-key --init
 #pacman-key --populate archlinux
-pacman-key --refresh-keys
+#pacman-key --refresh-keys
 pacman -Syy
 
 read -p "Установить иксы? [Y/n]" vm_set
@@ -180,7 +183,6 @@ systemctl mask NetworkManager-wait-online
 #echo 'initrd /initramfs-linux.img' >> /boot/loader/entries/archlinux.conf
 #echo 'options root="LABEL=ArchLinux" rw rootflags=subvol=@ nowatchdog loglevel=6 rootfstype=btrfs nvidia-drm.modeset=1' >> /boot/loader/entries/archlinux.conf
 
-pacman -S reflector rsync gparted gpart exfat-utils ffmpeg git ufw dosfstools mtools ntfs-3g alsa-lib alsa-utils p7zip unrar lrzip unzip unace squashfs-tools pipewire lib32-pipewire wireplumber pipewire-alsa pipewire-pulse pipewire-jack lib32-pipewire-jack
 
 reflector --verbose --country 'Germany' -l 10 --sort rate --save /etc/pacman.d/mirrorlist
 
