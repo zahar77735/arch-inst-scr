@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/bin/bash
 clear
 read -p "Введите имя компьютера: " hostname
 read -p "Введите имя пользователя: " username
@@ -45,7 +45,7 @@ echo 'Установка доп. приложений'
 pacman -S wget mc pkgfile --noconfirm
 pkgfile --update
 
-pacman -S rsync gparted gpart exfat-utils ffmpeg git ufw dosfstools mtools ntfs-3g alsa-lib alsa-utils p7zip unrar lrzip unzip unace squashfs-tools pipewire lib32-pipewire wireplumber pipewire-alsa pipewire-pulse pipewire-jack lib32-pipewire-jack
+pacman -S zsh rsync gparted gpart exfat-utils ffmpeg git ufw dosfstools mtools ntfs-3g alsa-lib alsa-utils p7zip unrar lrzip unzip unace squashfs-tools pipewire lib32-pipewire wireplumber pipewire-alsa pipewire-pulse pipewire-jack lib32-pipewire-jack
 
 
 sed -i 's/HOOKS=(base udev autodetect modconf block filesystems keyboard fsck)/HOOKS=(base udev autodetect modconf block filesystems keyboard)/' ./etc/mkinitcpio.conf
