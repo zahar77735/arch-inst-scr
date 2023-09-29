@@ -18,7 +18,7 @@ fdisk /dev/$xhdd
 read -p "Выберите раздел куда будет установлена система: " rootsection
 read -p "Введите имя метки тома: " mark
 read -p "Выберите раздел для boot: " efi
-mkfs.ext4 -f -L $mark /dev/$rootsection
+mkfs.ext4 -L $mark /dev/$rootsection
 mkfs.fat -F32 /dev/$efi
 mount /dev/$rootsection /mnt
 #btrfs subvolume create /mnt/@
