@@ -45,13 +45,13 @@ echo 'Установка доп. приложений'
 pacman -S wget mc pkgfile --noconfirm
 pkgfile --update
 
-pacman -S reflector rsync gparted gpart exfat-utils ffmpeg git ufw dosfstools mtools ntfs-3g alsa-lib alsa-utils p7zip unrar lrzip unzip unace squashfs-tools pipewire lib32-pipewire wireplumber pipewire-alsa pipewire-pulse pipewire-jack lib32-pipewire-jack
+pacman -S rsync gparted gpart exfat-utils ffmpeg git ufw dosfstools mtools ntfs-3g alsa-lib alsa-utils p7zip unrar lrzip unzip unace squashfs-tools pipewire lib32-pipewire wireplumber pipewire-alsa pipewire-pulse pipewire-jack lib32-pipewire-jack
 
 
 sed -i 's/HOOKS=(base udev autodetect modconf block filesystems keyboard fsck)/HOOKS=(base udev autodetect modconf block filesystems keyboard)/' ./etc/mkinitcpio.conf
 
 echo 'Создадим загрузочный RAM диск'
-mkinitcpio -p linux-zen
+mkinitcpio -P
 
 
 
@@ -151,11 +151,11 @@ else $vm_setting
 fi
 sleep 10
 
-#echo "изменяем активный планировщик ввода-вывода"
-#wget https://raw.githubusercontent.com/zahar77735/arch-inst-scr/master/files/60-ioschedulers.rules
-#mv 60-ioschedulers.rules /etc/udev/rules.d/60-ioschedulers.rules
-#chmod 644 /etc/udev/rules.d/60-ioschedulers.rules
-#sleep 5
+echo "изменяем активный планировщик ввода-вывода"
+wget https://raw.githubusercontent.com/zahar77735/arch-inst-scr/master/files/60-ioschedulers.rules
+mv 60-ioschedulers.rules /etc/udev/rules.d/60-ioschedulers.rules
+chmod 644 /etc/udev/rules.d/60-ioschedulers.rules
+sleep 5
 
 echo 'Ставим шрифты'
 pacman -S ttf-liberation ttf-dejavu ttf-ubuntu-font-family --noconfirm 
@@ -184,7 +184,7 @@ systemctl mask NetworkManager-wait-online
 #echo 'options root="LABEL=ArchLinux" rw rootflags=subvol=@ nowatchdog loglevel=6 rootfstype=btrfs nvidia-drm.modeset=1' >> /boot/loader/entries/archlinux.conf
 
 
-reflector --verbose --country 'Germany' -l 10 --sort rate --save /etc/pacman.d/mirrorlist
+#reflector --verbose --country 'Germany' -l 10 --sort rate --save /etc/pacman.d/mirrorlist
 
 echo 'Установка завершена! Перезагрузите систему.'
 
