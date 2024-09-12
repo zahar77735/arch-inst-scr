@@ -36,7 +36,7 @@ mount -o subvol=/@home,rw,noatime,autodefrag,compress=zstd:3,discard=async,ssd,s
 pacman -Sy
 
 echo 'Установка основных пакетов'
-pacstrap /mnt base base-devel linux-zen linux-firmware linux-zen-headers intel-ucode nano 
+pacstrap /mnt base base-devel linux-zen linux-firmware linux-zen-headers intel-ucode nano btrfs-progs
 
 genfstab -pU /mnt >> /mnt/etc/fstab
 
