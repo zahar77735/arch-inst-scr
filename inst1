@@ -16,19 +16,19 @@ lsblk
 read -p 'Выбрать диск? ' xhdd
 fdisk /dev/$xhdd
 read -p "Выберите раздел куда будет установлена система: " rootsection
-#read -p "Введите имя метки тома: " mark
+read -p "Введите имя метки тома: " mark
 #read -p "Выберите раздел для boot: " efi
-#mkfs.ext4 -L $mark /dev/$rootsection
+mkfs.ext4 -L $mark /dev/$rootsection
 #mkfs.fat -F32 /dev/$efi
 mount /dev/$rootsection /mnt
-btrfs subvolume create /mnt/@
-btrfs subvolume create /mnt/@home
-umount /mnt -R
-mount -o subvol=/@,rw,noatime,autodefrag,compress=zstd:3,discard=async,ssd,ssd_spread,space_cache=v2 /dev/$rootsection /mnt
+#btrfs subvolume create /mnt/@
+#btrfs subvolume create /mnt/@home
+#umount /mnt -R
+#mount -o subvol=/@,rw,noatime,autodefrag,compress=zstd:3,discard=async,ssd,ssd_spread,space_cache=v2 /dev/$rootsection /mnt
 #mkdir /mnt/boot
 #mkdir /mnt/boot/efi
-mkdir /mnt/home
-mount -o subvol=/@home,rw,noatime,autodefrag,compress=zstd:3,discard=async,ssd,ssd_spread,space_cache=v2 /dev/$rootsection /mnt/home
+#mkdir /mnt/home
+#mount -o subvol=/@home,rw,noatime,autodefrag,compress=zstd:3,discard=async,ssd,ssd_spread,space_cache=v2 /dev/$rootsection /mnt/home
 #mount -t vfat /dev/$efi /mnt/boot/efi
 
 #echo 'Выбор зеркал для загрузки.'
