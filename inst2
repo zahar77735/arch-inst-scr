@@ -55,10 +55,10 @@ mkinitcpio -P
 
 
 
-# pacman -S grub grub-btrfs efibootmgr os-prober
-pacman -S grub 
-# grub-install --target=x86_64-efi --efi-directory=/boot/efi/ --bootloader-id=GRUB
-grub-install /dev/sdb
+pacman -S grub grub-btrfs efibootmgr os-prober
+#pacman -S grub 
+grub-install --target=x86_64-efi --efi-directory=/boot/efi/ --bootloader-id=GRUB
+#grub-install /dev/sdb
 grub-mkconfig -o /boot/grub/grub.cfg
 
 #read -p "Установить тему Tela для GRUB? [Y/n]" themes_grub
@@ -96,7 +96,7 @@ echo '[multilib]' >> /etc/pacman.conf
 echo 'Include = /etc/pacman.d/mirrorlist' >> /etc/pacman.conf
 pacman-key --init
 pacman-key --populate archlinux
-pacman-key --refresh-keys
+#pacman-key --refresh-keys
 pacman -Syy
 
 read -p "Установить иксы? [Y/n]" vm_set
