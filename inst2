@@ -1,5 +1,6 @@
 #!/bin/bash
 clear
+hwclock --systohc
 read -p "Введите имя компьютера: " hostname
 read -p "Введите имя пользователя: " username
 
@@ -21,6 +22,8 @@ echo 'FONT=cyr-sun16' >> /etc/vconsole.conf
 
 echo 'Обновим текущую локаль системы'
 locale-gen
+
+nano /etc/hosts
 
 # если у нас SSD, то мы создадим zram
 #ssd=$(cat /etc/fstab | grep ssd | wc -l)
@@ -45,21 +48,21 @@ echo 'Установка доп. приложений'
 pacman -S wget mc pkgfile --noconfirm
 pkgfile --update
 
-pacman -S zsh rsync gparted gpart exfat-utils ffmpeg git ufw dosfstools mtools ntfs-3g alsa-lib alsa-utils p7zip unrar lrzip unzip unace squashfs-tools pipewire lib32-pipewire wireplumber pipewire-alsa pipewire-pulse pipewire-jack lib32-pipewire-jack
+#pacman -S zsh rsync gparted gpart exfat-utils ffmpeg git ufw dosfstools mtools ntfs-3g alsa-lib alsa-utils p7zip unrar lrzip unzip unace squashfs-tools pipewire lib32-pipewire wireplumber pipewire-alsa pipewire-pulse pipewire-jack lib32-pipewire-jack
 
 
-sed -i 's/HOOKS=(base udev autodetect modconf block filesystems keyboard fsck)/HOOKS=(base udev autodetect modconf block filesystems keyboard)/' ./etc/mkinitcpio.conf
+#sed -i 's/HOOKS=(base udev autodetect modconf block filesystems keyboard fsck)/HOOKS=(base udev autodetect modconf block filesystems keyboard)/' ./etc/mkinitcpio.conf
 
 echo 'Создадим загрузочный RAM диск'
 mkinitcpio -P
 
 
 
-pacman -S grub grub-btrfs efibootmgr os-prober
+#pacman -S grub grub-btrfs efibootmgr os-prober
 #pacman -S grub 
-grub-install --target=x86_64-efi --efi-directory=/boot/efi/ --bootloader-id=GRUB
+#grub-install --target=x86_64-efi --efi-directory=/boot/efi/ --bootloader-id=GRUB
 #grub-install /dev/sdb
-grub-mkconfig -o /boot/grub/grub.cfg
+#grub-mkconfig -o /boot/grub/grub.cfg
 
 #read -p "Установить тему Tela для GRUB? [Y/n]" themes_grub
 #if [[ -z $themes_grub || $themes_grub == y || $themes_grub == Y ]]
@@ -76,14 +79,14 @@ grub-mkconfig -o /boot/grub/grub.cfg
 #  echo 'Установка пропущена.'
 #fi
 
-echo 'Ставим программу для Wi-fi'
-pacman -S dialog wpa_supplicant --noconfirm 
+#echo 'Ставим программу для Wi-fi'
+#pacman -S dialog wpa_supplicant --noconfirm 
 
 echo 'Создаем root пароль'
 passwd
 
 echo 'Добавляем пользователя'
-useradd -m -g users -G wheel,audio,video,storage -s /bin/bash $username
+usermod -aG wheel,audio,video,storage,scanner,vboxusers $username
 
 echo 'Устанавливаем пароль пользователя'
 passwd $username
@@ -99,6 +102,13 @@ pacman-key --populate archlinux
 #pacman-key --refresh-keys
 pacman -Syy
 
+echo 'Устанавливаем загрузчик'
+pacman -S refind gdisk
+refind-install
+sleep 5
+nano /boot/efi/EFI/refind/refind.conf
+nano /boot/refind-linux.conf
+
 read -p "Установить иксы? [Y/n]" vm_set
 if [[ -z $vm_set || $vm_set == y || $vm_set == Y ]]
   then pacman -S xorg-server xorg-drivers xorg-xinit --noconfirm
@@ -111,10 +121,10 @@ if [[ -z $nvidia_set || $nvidia_set == y || $nvidia_set == Y ]]
   then sudo pacman -S nvidia-dkms nvidia-utils lib32-nvidia-utils nvidia-settings opencl-nvidia lib32-opencl-nvidia vulkan-icd-loader lib32-vulkan-icd-loader libva-vdpau-driver --noconfirm
   sleep 15
   sed -i 's/MODULES=(/MODULES=(nvidia nvidia_modeset nvidia_uvm nvidia_drm /' ./etc/mkinitcpio.conf
-  sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT="/GRUB_CMDLINE_LINUX_DEFAULT="nvidia-drm.modeset=1 /' ./etc/default/grub
+  #sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT="/GRUB_CMDLINE_LINUX_DEFAULT="nvidia-drm.modeset=1 /' ./etc/default/grub
   sleep 10
-  mkinitcpio -p linux-zen
-  grub-mkconfig -o /boot/grub/grub.cfg
+  mkinitcpio -P
+  #grub-mkconfig -o /boot/grub/grub.cfg
   mkdir /etc/pacman.d/hooks
   wget https://raw.githubusercontent.com/zahar77735/arch-inst-scr/master/files/nvidia.hook
   mv nvidia.hook /etc/pacman.d/hooks/nvidia.hook
@@ -154,10 +164,10 @@ fi
 sleep 10
 
 echo "изменяем активный планировщик ввода-вывода"
-wget https://raw.githubusercontent.com/zahar77735/arch-inst-scr/master/files/60-ioschedulers.rules
-mv 60-ioschedulers.rules /etc/udev/rules.d/60-ioschedulers.rules
-chmod 644 /etc/udev/rules.d/60-ioschedulers.rules
-sleep 5
+#wget https://raw.githubusercontent.com/zahar77735/arch-inst-scr/master/files/60-ioschedulers.rules
+#mv 60-ioschedulers.rules /etc/udev/rules.d/60-ioschedulers.rules
+#chmod 644 /etc/udev/rules.d/60-ioschedulers.rules
+#sleep 5
 
 echo 'Ставим шрифты'
 pacman -S ttf-liberation ttf-dejavu ttf-ubuntu-font-family --noconfirm 
