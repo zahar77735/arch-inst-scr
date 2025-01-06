@@ -105,11 +105,11 @@ pacman-key --populate archlinux
 pacman -Syy
 
 echo 'Устанавливаем загрузчик'
-pacman -S refind gdisk
-refind-install
+#pacman -S refind gdisk
+#refind-install
 sleep 5
-nano /boot/efi/EFI/refind/refind.conf
-nano /boot/refind-linux.conf
+#nano /boot/efi/EFI/refind/refind.conf
+#nano /boot/refind-linux.conf
 
 read -p "Установить иксы? [Y/n]" vm_set
 if [[ -z $vm_set || $vm_set == y || $vm_set == Y ]]
