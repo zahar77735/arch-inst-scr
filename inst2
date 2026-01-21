@@ -133,7 +133,7 @@ if [[ -z $nvidia_set || $nvidia_set == y || $nvidia_set == Y ]]
   chmod 644 /etc/pacman.d/hooks/nvidia.hook
   sleep 5
 elif [[ $nvidia_set == n || $nvidia_set == N ]]; then
-  echo 'Установка пропущена.'
+  pacman -S vulkan-radeon lib32-vulkan-radeon
 fi
 
 echo ""
