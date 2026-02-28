@@ -20,10 +20,10 @@ read -p "Введите имя метки тома: " mark
 read -p "Выберите раздел для boot: " efi
 mkfs.f2fs -f -l "$mark" /dev/$rootsection
 mkfs.fat -F32 /dev/$efi
-mount -o default,relatime,discard /dev/$rootsection /mnt
+mount /dev/$rootsection /mnt
 mkdir -p /mnt/boot
 mkdir -p /mnt/boot/efi
-mount -t vfat -o default,relatime /dev/$efi /mnt/boot/efi
+mount -t vfat /dev/$efi /mnt/boot/efi
 
 echo 'Выбор зеркал для загрузки.'
 nano /etc/pacman.d/mirrorlist
