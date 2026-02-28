@@ -48,36 +48,17 @@ echo 'Установка доп. приложений'
 pacman -S wget mc pkgfile --noconfirm
 pkgfile --update
 
-pacman -S zsh rsync gparted gpart exfat-utils ffmpeg git ufw dosfstools mtools ntfs-3g alsa-lib alsa-utils p7zip unrar lrzip unzip unace squashfs-tools pipewire lib32-pipewire wireplumber pipewire-alsa pipewire-pulse pipewire-jack lib32-pipewire-jack
+pacman -S zsh rsync gparted gpart exfat-utils ffmpeg git ufw dosfstools mtools ntfs-3g alsa-lib alsa-utils p7zip unrar lrzip unzip unace squashfs-tools pipewire lib32-pipewire wireplumber pipewire-alsa pipewire-pulse pipewire-jack lib32-pipewire-jack --noconfirm
 
 
-sed -i 's/HOOKS=(base udev autodetect modconf block filesystems keyboard fsck)/HOOKS=(systemd base autodetect microcode modconf kms block consolefont filesystems keyboard keymap fsck)/' ./etc/mkinitcpio.conf
+sed -i 's/HOOKS=(base udev autodetect modconf block filesystems keyboard fsck)/HOOKS=(systemd autodetect microcode modconf kms block consolefont filesystems keyboard keymap fsck)/' ./etc/mkinitcpio.conf
 
 echo 'Создадим загрузочный RAM диск'
 mkinitcpio -P
 
-
-
-pacman -S grub efibootmgr
-#pacman -S grub 
+pacman -S grub efibootmgr --noconfirm
 grub-install --target=x86_64-efi --efi-directory=/boot/efi/ --bootloader-id=GRUB
-#grub-install /dev/sdb
 grub-mkconfig -o /boot/grub/grub.cfg
-
-#read -p "Установить тему Tela для GRUB? [Y/n]" themes_grub
-#if [[ -z $themes_grub || $themes_grub == y || $themes_grub == Y ]]
-#  then wget https://raw.githubusercontent.com/zahar77735/arch-inst-scr/master/files/Tela.tar.xz
-#  tar xvJf Tela.tar.xz
-#  rm Tela.tar.xz
-#  mkdir /boot/grub/themes
-#  cp -a Tela /boot/grub/themes
-#  rm -rf Tela
-#  grep "GRUB_THEME=" /etc/default/grub 2>&1 >/dev/null && sed -i '/GRUB_THEME=/d' /etc/default/grub
-#  echo "GRUB_THEME=\"/boot/grub/themes/Tela/theme.txt\"" >> /etc/default/grub
-#  grub-mkconfig -o /boot/grub/grub.cfg
-#elif [[ $themes_grub == n || $themes_grub == N ]]; then
-#  echo 'Установка пропущена.'
-#fi
 
 echo 'Ставим программу для Wi-fi'
 pacman -S dialog wpa_supplicant --noconfirm 
@@ -152,7 +133,7 @@ elif [[ $vm_setting == x || $vm_setting == X ]]
   systemctl enable lightdm
   sleep 5
 elif [[ $vm_setting == k || $vm_setting == K ]]
-  then pacman -Sy plasma sddm
+  then pacman -Sy plasma sddm kde-applications konsole ark okular --noconfirm
   sleep 5
   systemctl enable sddm
   sleep 5
