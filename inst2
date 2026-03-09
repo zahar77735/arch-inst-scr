@@ -44,6 +44,14 @@ if [[ $ssd != 0 ]]; then
 	echo 'vm.swappiness=60' >> /etc/sysctl.conf
 fi
 
+echo 'Раскомментируем репозиторий multilib Для работы 32-битных приложений в 64-битной системе.'
+echo '[multilib]' >> /etc/pacman.conf
+echo 'Include = /etc/pacman.d/mirrorlist' >> /etc/pacman.conf
+pacman-key --init
+pacman-key --populate archlinux
+#pacman-key --refresh-keys
+pacman -Syy
+
 echo 'Установка доп. приложений'
 pacman -S wget mc pkgfile --noconfirm
 pkgfile --update
@@ -56,8 +64,12 @@ sed -i 's/HOOKS=(base udev autodetect modconf block filesystems keyboard fsck)/H
 echo 'Создадим загрузочный RAM диск'
 mkinitcpio -P
 
-pacman -S grub efibootmgr --noconfirm
-grub-install --target=x86_64-efi --efi-directory=/boot/efi/ --bootloader-id=GRUB
+#pacman -S grub efibootmgr --noconfirm
+#grub-install --target=x86_64-efi --efi-directory=/boot/efi/ --bootloader-id=GRUB
+#grub-mkconfig -o /boot/grub/grub.cfg
+pacman -S grub
+read -p "Куда устанавливаем загрузчик: " mark
+grub-install /dev/$mark
 grub-mkconfig -o /boot/grub/grub.cfg
 
 echo 'Ставим программу для Wi-fi'
@@ -76,14 +88,6 @@ usermod -aG wheel,audio,video,storage,scanner $username
 
 echo 'Устанавливаем SUDO'
 echo '%wheel ALL=(ALL) ALL' >> /etc/sudoers
-
-echo 'Раскомментируем репозиторий multilib Для работы 32-битных приложений в 64-битной системе.'
-echo '[multilib]' >> /etc/pacman.conf
-echo 'Include = /etc/pacman.d/mirrorlist' >> /etc/pacman.conf
-pacman-key --init
-pacman-key --populate archlinux
-#pacman-key --refresh-keys
-pacman -Syy
 
 echo 'Устанавливаем загрузчик'
 #pacman -S refind gdisk
