@@ -13,17 +13,27 @@ echo 'Создание разделов'
 echo 'Ваша разметка диска'
 lsblk
 
-read -p 'Выбрать диск? ' xhdd
-fdisk /dev/$xhdd
-read -p "Выберите раздел куда будет установлена система: " rootsection
-read -p "Введите имя метки тома: " mark
-read -p "Выберите раздел для boot: " efi
-mkfs.f2fs -f -l "$mark" /dev/$rootsection
-mkfs.fat -F32 /dev/$efi
-mount /dev/$rootsection /mnt
-mkdir -p /mnt/boot
-mkdir -p /mnt/boot/efi
-mount -t vfat /dev/$efi /mnt/boot/efi
+disk=$(test -d /sys/firmware/efi && echo efi || echo bios)
+if [[ $disk == efi ]]; then
+  read -p 'Выбрать диск? ' xhdd
+  fdisk /dev/$xhdd
+  read -p "Выберите раздел куда будет установлена система: " rootsection
+  read -p "Введите имя метки тома: " mark
+  read -p "Выберите раздел для boot: " efi
+  mkfs.f2fs -f -l "$mark" /dev/$rootsection
+  mkfs.fat -F32 /dev/$efi
+  mount /dev/$rootsection /mnt
+  mkdir -p /mnt/boot
+  mkdir -p /mnt/boot/efi
+  mount -t vfat /dev/$efi /mnt/boot/efi
+elif [[ $disk == bios ]]; then
+  read -p 'Выбрать диск? ' xhdd
+  fdisk /dev/$xhdd
+  read -p "Выберите раздел куда будет установлена система: " rootsection
+  read -p "Введите имя метки тома: " mark
+  mkfs.f2fs -f -l "$mark" /dev/$rootsection
+  mount /dev/$rootsection /mnt
+fi
 
 echo 'Выбор зеркал для загрузки.'
 nano /etc/pacman.d/mirrorlist
