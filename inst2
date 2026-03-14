@@ -137,7 +137,7 @@ elif [[ $vm_setting == x || $vm_setting == X ]]
   systemctl enable lightdm
   sleep 5
 elif [[ $vm_setting == k || $vm_setting == K ]]
-  then pacman -Sy plasma sddm dolphin konsole ark okular --noconfirm
+  then pacman -Sy plasma sddm dolphin kate konsole ark okular --noconfirm
   sleep 5
   systemctl enable sddm
   sleep 5
