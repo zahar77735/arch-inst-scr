@@ -26,8 +26,8 @@ locale-gen
 #nano /etc/hosts
 
 # если у нас SSD, то мы создадим zram
-ssd=$(cat /etc/fstab | grep ssd | wc -l)
-if [[ $ssd != 0 ]]; then
+ssd=$(cat /sys/block/sda/queue/rotational)
+if [[ $ssd == 0 ]]; then
 	echo "У нас SSD и мы создаём ZRAM"
 	kern=$(cat /proc/cpuinfo | grep processor | wc -l)
 	echo 'zram' >> /etc/modules-load.d/zram.conf
