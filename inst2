@@ -64,13 +64,29 @@ sed -i 's/HOOKS=(base udev autodetect modconf block filesystems keyboard fsck)/H
 echo 'Создадим загрузочный RAM диск'
 mkinitcpio -P
 
+echo 'Установка загрузчика'
+grub=$(test -d /sys/firmware/efi && echo efi || echo bios)
+if [[ $grub == efi ]]; then
+    echo "У нас UEFI загрузчик"
+	pacman -S grub efibootmgr --noconfirm
+	grub-install --target=x86_64-efi --efi-directory=/boot/efi/ --bootloader-id=GRUB
+	grub-mkconfig -o /boot/grub/grub.cfg
+elif [[ $grub == bios ]]; then
+    echo "У нас Legasy загрузчик"
+	pacman -S grub
+	lsblk
+	read -p "Куда устанавливаем загрузчик: " mark
+	grub-install /dev/$mark
+	grub-mkconfig -o /boot/grub/grub.cfg
+fi
+
 #pacman -S grub efibootmgr --noconfirm
 #grub-install --target=x86_64-efi --efi-directory=/boot/efi/ --bootloader-id=GRUB
 #grub-mkconfig -o /boot/grub/grub.cfg
-pacman -S grub
-read -p "Куда устанавливаем загрузчик: " mark
-grub-install /dev/$mark
-grub-mkconfig -o /boot/grub/grub.cfg
+#pacman -S grub
+#read -p "Куда устанавливаем загрузчик: " mark
+#grub-install /dev/$mark
+#grub-mkconfig -o /boot/grub/grub.cfg
 
 echo 'Ставим программу для Wi-fi'
 pacman -S dialog wpa_supplicant --noconfirm 
